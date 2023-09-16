@@ -574,6 +574,13 @@ function clearFields(id, templateFunction) {
   templateFunction();
 }
 
+function clearForm(id, templateFunction) {
+  var form = document.getElementById(id);
+  form.reset();
+  document.getElementById("finalOutputForm").reset();
+  templateFunction();
+}
+
 function copyText() {
   // Get the text field
   var copyText = document.getElementById("finalOutput");
