@@ -12,6 +12,7 @@ const location1 = [
   "Fire Station",
   "Hospital",
   "Lifeinvader",
+  "Mirror Park",
   "Paleto Bay",
   "Postal",
   "Richman",
