@@ -33,7 +33,6 @@ const location2 = [
   "airport",
   "beach",
   "beach market",
-  "fire station",
   "ghetto",
   "post office",
   "train station",
