@@ -1,6 +1,6 @@
 let divId1 = document.getElementById("reLocation_2");
 let j = 0;
-for (let i = 0; i < 8; i++) {
+for (let i = 0; i < 10; i++) {
   let div = document.createElement("div");
   div.className = "form-check ps-0";
   divId1.appendChild(div);
@@ -21,7 +21,7 @@ for (let i = 0; i < 8; i++) {
   j += 1;
 }
 let divId2 = document.getElementById("reLocation_3");
-for (let i = 8; i < 16; i++) {
+for (let i = 10; i < 20; i++) {
   let div = document.createElement("div");
   div.className = "form-check ps-0";
   divId2.appendChild(div);
@@ -42,7 +42,7 @@ for (let i = 8; i < 16; i++) {
   j++;
 }
 let divId3 = document.getElementById("reLocation_4");
-for (let i = 16; i < 23; i++) {
+for (let i = 20; i < 28; i++) {
   let div = document.createElement("div");
   div.className = "form-check ps-0";
   divId3.appendChild(div);
