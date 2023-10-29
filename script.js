@@ -550,7 +550,7 @@ function formatArray(arr) {
 //   //   );
 // }
 function formatCurrency(amount) {
-  return amount.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  return amount.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 }
 
 // location1.forEach((item) => {
