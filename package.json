@@ -1,51 +1,28 @@
 {
-  "name": "material-kit",
-  "version": "3.0.4",
-  "description": "Freebie UI Kit for Bootstrap 5",
-  "main": "index.html",
-  "directories": {
-    "example": "root"
-  },
+  "name": "lifeinvader-ads-nextjs",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "open-app": "gulp open-app",
-    "start": "npm run open-app",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "gulp-watch"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/material-kit.git"
-  },
-  "keywords": [
-    "material kit 2",
-    "bootstrap 5",
-    "design system",
-    "ui kit",
-    "creative tim",
-    "html kit",
-    "html css kit",
-    "web kit",
-    "freebie",
-    "free bootstrap kit",
-    "css3 kit",
-    "bootstrap design system",
-    "frontend",
-    "responsive bootstrap kit"
-  ],
-  "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/material-kit/issues"
+  "dependencies": {
+    "next": "15.5.5",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-clean": "^0.4.0",
-    "gulp-install": "^1.1.0",
-    "gulp-sass": "^5.1.0",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-open": "^3.0.1",
-    "sass": "^1.49.9"
-  },
-  "homepage": "https://creative-tim.com/product/material-kit"
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.5.5",
+    "postcss": "^8",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5"
+  }
 }
