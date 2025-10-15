@@ -1,12 +1,3 @@
-"use client";
-
-import {
-  MdVerified,
-  MdAutoAwesome,
-  MdContentCopy,
-  MdKeyboardArrowDown,
-} from "react-icons/md";
-
 export default function Header() {
   return (
     <header
@@ -39,7 +30,7 @@ export default function Header() {
             </h1>
 
             <p className="text-white/90 text-xl md:text-2xl mb-6 max-w-2xl mx-auto leading-relaxed">
-              Generate professional ads for your listings
+              Generate professional ads with policy compliance
             </p>
 
             {/* <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

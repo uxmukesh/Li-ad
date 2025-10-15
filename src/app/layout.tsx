@@ -15,11 +15,11 @@ const robotoSlab = Roboto_Slab({
 });
 
 export const metadata: Metadata = {
-  title: "Lifeinvader Ads Template",
-  description: "Generate Lifeinvader ads for Real Estate, Auto, and more",
+  title: "Lifeinvader Ads Generator",
+  description:
+    "Generate professional Lifeinvader ads with policy compliance for Real Estate, Auto, Dating, Work, Business, and more",
   icons: {
-    icon: "/favicon.png",
-    apple: "/apple-icon.png",
+    icon: "/favicon.svg",
   },
 };
 
