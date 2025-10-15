@@ -245,6 +245,11 @@ function realEstateTemplate() {
     var reInsuranceValue = reInsurance.value;
   }
 
+  var reHelipad = document.getElementById("reHelipad");
+  if (reHelipad.checked) {
+    var reHelipadValue = reHelipad.value;
+  }
+
   var reSwimmingPool = document.getElementById("reSwimmingPool");
   if (reSwimmingPool.checked) {
     var reSwimmingPoolValue = reSwimmingPool.value;
@@ -253,11 +258,6 @@ function realEstateTemplate() {
   var reTennisCourt = document.getElementById("reTennisCourt");
   if (reTennisCourt.checked) {
     var reTennisCourtValue = reTennisCourt.value;
-  }
-
-  var reHelipad = document.getElementById("reHelipad");
-  if (reHelipad.checked) {
-    var reHelipadValue = reHelipad.value;
   }
 
   var reDriveway = document.getElementById("reDriveway");

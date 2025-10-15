@@ -451,4 +451,5 @@ const autoNames = [
   "SuperVolito Carbon",
   "Swift Deluxe",
   "Volatus",
+  "Monowheel",
 ];
