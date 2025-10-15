@@ -1,9 +1,6 @@
 export default function Header() {
   return (
-    <header
-      className="relative bg-cover bg-center overflow-hidden"
-      style={{ backgroundImage: "url('/bg2.jpg')" }}
-    >
+    <header className="relative bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 overflow-hidden">
       {/* Animated background overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-700/85 via-slate-600/80 to-slate-800/85"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>

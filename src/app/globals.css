@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@400;700&display=swap")
-layer(utilities);
+@layer utilities;
 
 @theme {
   /* Professional Navy Primary */
