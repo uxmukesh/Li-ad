@@ -1,17 +1,17 @@
 export default function Header() {
   return (
     <header
-      className="relative bg-cover bg-center overflow-hidden"
+      className="relative bg-cover bg-center bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden"
       style={{ backgroundImage: "url('/bg2.jpg')" }}
     >
       {/* Animated background overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-700/85 via-slate-600/80 to-slate-800/85"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-800/85 to-black/90"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
 
-      {/* Floating elements */}
-      <div className="absolute top-10 left-10 w-20 h-20 bg-slate-200/20 rounded-full blur-xl animate-pulse"></div>
-      <div className="absolute top-20 right-20 w-32 h-32 bg-slate-300/25 rounded-full blur-2xl animate-pulse delay-1000"></div>
-      <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-slate-200/15 rounded-full blur-lg animate-pulse delay-2000"></div>
+      {/* Floating elements with vibrant colors */}
+      <div className="absolute top-10 left-10 w-20 h-20 bg-cyan-400/20 rounded-full blur-xl animate-pulse"></div>
+      <div className="absolute top-20 right-20 w-32 h-32 bg-purple-400/25 rounded-full blur-2xl animate-pulse delay-1000"></div>
+      <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-emerald-400/15 rounded-full blur-lg animate-pulse delay-2000"></div>
 
       <div className="relative z-10 container mx-auto px-4 pb-16">
         <div className="flex items-center justify-center min-h-[280px]">
@@ -24,7 +24,7 @@ export default function Header() {
             </div> */}
 
             <h1 className="text-white text-5xl md:text-7xl font-bold mb-0 leading-tight">
-              <span className="bg-gradient-to-r from-white to-primary-100 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-500 to-purple-800 bg-clip-text text-transparent">
                 Lifeinvader Ads
               </span>
             </h1>

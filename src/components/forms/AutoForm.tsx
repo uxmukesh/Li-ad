@@ -96,8 +96,8 @@ export default function AutoForm({
       {/* Purpose, Name, and Price Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdBusiness className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdBusiness className="text-cyan-400 mr-2 text-lg" />
             Purpose
           </h6>
           <div className="space-y-3">
@@ -110,7 +110,7 @@ export default function AutoForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Selling</span>
+              <span className="ml-2 text-sm text-gray-300">Selling</span>
             </label>
             <label className="flex items-center">
               <input
@@ -121,14 +121,14 @@ export default function AutoForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Buying</span>
+              <span className="ml-2 text-sm text-gray-300">Buying</span>
             </label>
           </div>
         </div>
 
         <div className="feature-card relative">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdDirectionsCar className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdDirectionsCar className="text-cyan-400 mr-2 text-lg" />
             Name
           </h6>
           <div className="relative">
@@ -177,8 +177,8 @@ export default function AutoForm({
         </div>
 
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdAttachMoney className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
             {localForm.purpose === "Selling" ? "Price:" : "Budget:"}
           </h6>
           <div className="flex gap-2">
@@ -205,7 +205,7 @@ export default function AutoForm({
               }
               className="form-checkbox"
             />
-            <span className="ml-2 text-sm">Million.</span>
+            <span className="ml-2 text-sm text-gray-300">Million.</span>
           </label>
         </div>
       </div>
@@ -213,7 +213,7 @@ export default function AutoForm({
       {/* Features Row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div>
-          <h6 className="text-sm font-medium text-gray-700 mb-2">
+          <h6 className="text-sm font-medium text-gray-300 mb-2">
             Configuration
           </h6>
           <label className="flex items-center">
@@ -225,7 +225,7 @@ export default function AutoForm({
               }
               className="form-checkbox"
             />
-            <span className="ml-2 text-sm">configuration</span>
+            <span className="ml-2 text-sm text-gray-300">configuration</span>
           </label>
           {localForm.configuration && (
             <div className="mt-2 space-y-1">
@@ -238,7 +238,7 @@ export default function AutoForm({
                   onChange={(e) => handleChange("configValue", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">Full</span>
+                <span className="ml-2 text-sm text-gray-300">Full</span>
               </label>
               <label className="flex items-center">
                 <input
@@ -249,14 +249,14 @@ export default function AutoForm({
                   onChange={(e) => handleChange("configValue", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">Partial</span>
+                <span className="ml-2 text-sm text-gray-300">Partial</span>
               </label>
             </div>
           )}
         </div>
 
         <div>
-          <h6 className="text-sm font-medium text-gray-700 mb-2">
+          <h6 className="text-sm font-medium text-gray-300 mb-2">
             Visual Upgrades
           </h6>
           <label className="flex items-center">
@@ -268,12 +268,12 @@ export default function AutoForm({
               }
               className="form-checkbox"
             />
-            <span className="ml-2 text-sm">visual upgrades</span>
+            <span className="ml-2 text-sm text-gray-300">visual upgrades</span>
           </label>
         </div>
 
         <div>
-          <h6 className="text-sm font-medium text-gray-700 mb-2">
+          <h6 className="text-sm font-medium text-gray-300 mb-2">
             Luminous Wheels
           </h6>
           <label className="flex items-center">
@@ -285,12 +285,12 @@ export default function AutoForm({
               }
               className="form-checkbox"
             />
-            <span className="ml-2 text-sm">luminous wheels</span>
+            <span className="ml-2 text-sm text-gray-300">luminous wheels</span>
           </label>
         </div>
 
         <div>
-          <h6 className="text-sm font-medium text-gray-700 mb-2">Insurance</h6>
+          <h6 className="text-sm font-medium text-gray-300 mb-2">Insurance</h6>
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -300,12 +300,12 @@ export default function AutoForm({
               }
               className="form-checkbox"
             />
-            <span className="ml-2 text-sm">insurance</span>
+            <span className="ml-2 text-sm text-gray-300">insurance</span>
           </label>
         </div>
 
         <div>
-          <h6 className="text-sm font-medium text-gray-700 mb-2">Turbo Kit</h6>
+          <h6 className="text-sm font-medium text-gray-300 mb-2">Turbo Kit</h6>
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -315,7 +315,7 @@ export default function AutoForm({
               }
               className="form-checkbox"
             />
-            <span className="ml-2 text-sm">turbo kit</span>
+            <span className="ml-2 text-sm text-gray-300">turbo kit</span>
           </label>
         </div>
       </div>
@@ -323,7 +323,7 @@ export default function AutoForm({
       {/* Drift Kit */}
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
         <div>
-          <h6 className="text-sm font-medium text-gray-700 mb-2">Drift Kit</h6>
+          <h6 className="text-sm font-medium text-gray-300 mb-2">Drift Kit</h6>
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -333,7 +333,7 @@ export default function AutoForm({
               }
               className="form-checkbox"
             />
-            <span className="ml-2 text-sm">drift kit</span>
+            <span className="ml-2 text-sm text-gray-300">drift kit</span>
           </label>
         </div>
       </div>

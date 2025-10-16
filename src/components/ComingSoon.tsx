@@ -9,7 +9,7 @@ export default function ComingSoon() {
             <MdConstruction className="text-primary-600 text-3xl" />
           </div>
         </div>
-        <h2 className="text-3xl font-bold text-gray-700 mb-4">Coming Soon</h2>
+        <h2 className="text-3xl font-bold text-gray-300 mb-4">Coming Soon</h2>
         <p className="text-gray-500 text-lg mb-6">
           This category is currently under development. We're working hard to
           bring you amazing new features!

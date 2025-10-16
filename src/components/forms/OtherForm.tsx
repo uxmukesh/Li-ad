@@ -87,18 +87,43 @@ export default function OtherForm({
 
   const partyLocations = [
     "Houses/apartment",
-    "The beach",
-    "The yacht",
+    "beach",
+    "yacht",
     "Bahama Mamas Bar",
     "Tequi-la-la Bar",
     "Stadium",
-    "Diamond Resort Bar (casino)",
-    "Arena",
-    "Raton Canyon",
+    "Diamond Resort Bar (Casino Restaurant)",
     "Vanilla Unicorn Bar",
     "Hotel Spa Bar",
-    "Cayo Perico",
-    "House №49",
+    "Cayo Perico Island",
+    "Vinewood Hills",
+    "Rockford Hills",
+    "Richman",
+    "Sandy Shores",
+    "Paleto Bay",
+    "Chumash",
+    "Del Perro Pier",
+    "Del Perro Beach",
+    "Raton Canyon",
+    "Hotel",
+    "School",
+    "SAHP",
+    "FIB",
+    "Hospital",
+    "Capitol",
+    "Fire Station",
+    "Auto Fair",
+    "Church",
+    "Stock Exchange",
+    "Lifeinvader",
+    "Postal",
+    "airport",
+    "autosalon",
+    "beach market",
+    "ghetto",
+    "post office",
+    "train station",
+    "the city",
   ];
 
   const partyTypes = [
@@ -300,8 +325,8 @@ export default function OtherForm({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Category Selection */}
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdPartyMode className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdPartyMode className="text-cyan-400 mr-2 text-lg" />
             Category
           </h6>
           <div className="space-y-3">
@@ -314,7 +339,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Party</span>
+              <span className="ml-2 text-sm text-gray-300">Party</span>
             </label>
             <label className="flex items-center">
               <input
@@ -325,7 +350,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Services</span>
+              <span className="ml-2 text-sm text-gray-300">Services</span>
             </label>
             <label className="flex items-center">
               <input
@@ -336,7 +361,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Items</span>
+              <span className="ml-2 text-sm text-gray-300">Items</span>
             </label>
             <label className="flex items-center">
               <input
@@ -347,7 +372,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Pets</span>
+              <span className="ml-2 text-sm text-gray-300">Pets</span>
             </label>
             <label className="flex items-center">
               <input
@@ -358,7 +383,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Resources</span>
+              <span className="ml-2 text-sm text-gray-300">Resources</span>
             </label>
             <label className="flex items-center">
               <input
@@ -369,7 +394,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Containers</span>
+              <span className="ml-2 text-sm text-gray-300">Containers</span>
             </label>
             <label className="flex items-center">
               <input
@@ -380,7 +405,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Clothing</span>
+              <span className="ml-2 text-sm text-gray-300">Clothing</span>
             </label>
             <label className="flex items-center">
               <input
@@ -391,7 +416,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Gambling</span>
+              <span className="ml-2 text-sm text-gray-300">Gambling</span>
             </label>
             <label className="flex items-center">
               <input
@@ -402,15 +427,15 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("category", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Alliance</span>
+              <span className="ml-2 text-sm text-gray-300">Alliance</span>
             </label>
           </div>
         </div>
 
         {/* Purpose Selection */}
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdAttachMoney className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
             Purpose
           </h6>
           <div className="space-y-3">
@@ -423,7 +448,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Selling</span>
+              <span className="ml-2 text-sm text-gray-300">Selling</span>
             </label>
             <label className="flex items-center">
               <input
@@ -434,7 +459,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Buying</span>
+              <span className="ml-2 text-sm text-gray-300">Buying</span>
             </label>
             <label className="flex items-center">
               <input
@@ -445,7 +470,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Trading</span>
+              <span className="ml-2 text-sm text-gray-300">Trading</span>
             </label>
             <label className="flex items-center">
               <input
@@ -456,7 +481,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Looking for</span>
+              <span className="ml-2 text-sm text-gray-300">Looking for</span>
             </label>
             <label className="flex items-center">
               <input
@@ -467,7 +492,7 @@ export default function OtherForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Offering</span>
+              <span className="ml-2 text-sm text-gray-300">Offering</span>
             </label>
           </div>
         </div>
@@ -477,8 +502,8 @@ export default function OtherForm({
       {localForm.category === "party" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdLocationOn className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdLocationOn className="text-cyan-400 mr-2 text-lg" />
               Party Location
             </h6>
             <div className="space-y-2">
@@ -494,15 +519,15 @@ export default function OtherForm({
                     }
                     className="form-radio"
                   />
-                  <span className="ml-2 text-sm">{location}</span>
+                  <span className="ml-2 text-sm text-gray-300">{location}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdPartyMode className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdPartyMode className="text-cyan-400 mr-2 text-lg" />
               Party Type
             </h6>
             <div className="space-y-2">
@@ -516,7 +541,7 @@ export default function OtherForm({
                     onChange={(e) => handleChange("partyType", e.target.value)}
                     className="form-radio"
                   />
-                  <span className="ml-2 text-sm">{type}</span>
+                  <span className="ml-2 text-sm text-gray-300">{type}</span>
                 </label>
               ))}
             </div>
@@ -527,8 +552,8 @@ export default function OtherForm({
       {/* Services Details */}
       {localForm.category === "services" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdBuild className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdBuild className="text-cyan-400 mr-2 text-lg" />
             Service Type
           </h6>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -542,7 +567,7 @@ export default function OtherForm({
                   onChange={(e) => handleChange("serviceType", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">{type}</span>
+                <span className="ml-2 text-sm text-gray-300">{type}</span>
               </label>
             ))}
           </div>
@@ -553,8 +578,8 @@ export default function OtherForm({
       {localForm.category === "items" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdInventory className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdInventory className="text-cyan-400 mr-2 text-lg" />
               Item Category
             </h6>
             <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -570,20 +595,20 @@ export default function OtherForm({
                     }
                     className="form-radio"
                   />
-                  <span className="ml-2 text-sm">{category}</span>
+                  <span className="ml-2 text-sm text-gray-300">{category}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdEdit className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdEdit className="text-cyan-400 mr-2 text-lg" />
               Item Details
             </h6>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Item Type
                 </label>
                 <select
@@ -723,7 +748,7 @@ export default function OtherForm({
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Quantity
                 </label>
                 <input
@@ -736,7 +761,7 @@ export default function OtherForm({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Quality
                 </label>
                 <select
@@ -760,8 +785,8 @@ export default function OtherForm({
       {localForm.category === "pets" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdPets className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdPets className="text-cyan-400 mr-2 text-lg" />
               Pet Type
             </h6>
             <div className="space-y-3">
@@ -774,7 +799,9 @@ export default function OtherForm({
                   onChange={(e) => handleChange("petType", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">Shoulder pets</span>
+                <span className="ml-2 text-sm text-gray-300">
+                  Shoulder pets
+                </span>
               </label>
               <label className="flex items-center">
                 <input
@@ -785,14 +812,14 @@ export default function OtherForm({
                   onChange={(e) => handleChange("petType", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">Caged pets</span>
+                <span className="ml-2 text-sm text-gray-300">Caged pets</span>
               </label>
             </div>
           </div>
 
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdPets className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdPets className="text-cyan-400 mr-2 text-lg" />
               Pet Selection
             </h6>
             <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -807,7 +834,7 @@ export default function OtherForm({
                       onChange={(e) => handleChange("petName", e.target.value)}
                       className="form-radio"
                     />
-                    <span className="ml-2 text-sm">{pet}</span>
+                    <span className="ml-2 text-sm text-gray-300">{pet}</span>
                   </label>
                 ))}
               {localForm.petType === "caged" &&
@@ -821,7 +848,7 @@ export default function OtherForm({
                       onChange={(e) => handleChange("petName", e.target.value)}
                       className="form-radio"
                     />
-                    <span className="ml-2 text-sm">{pet}</span>
+                    <span className="ml-2 text-sm text-gray-300">{pet}</span>
                   </label>
                 ))}
             </div>
@@ -833,8 +860,8 @@ export default function OtherForm({
       {localForm.category === "resources" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdNature className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdNature className="text-cyan-400 mr-2 text-lg" />
               Resource Type
             </h6>
             <div className="space-y-2">
@@ -850,19 +877,19 @@ export default function OtherForm({
                     }
                     className="form-radio"
                   />
-                  <span className="ml-2 text-sm">{type}</span>
+                  <span className="ml-2 text-sm text-gray-300">{type}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdEdit className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdEdit className="text-cyan-400 mr-2 text-lg" />
               Resource Details
             </h6>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Quantity
               </label>
               <input
@@ -883,8 +910,8 @@ export default function OtherForm({
       {/* Containers Details */}
       {localForm.category === "containers" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdCardGiftcard className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdCardGiftcard className="text-cyan-400 mr-2 text-lg" />
             Container Type
           </h6>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
@@ -900,7 +927,7 @@ export default function OtherForm({
                   }
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">{type}</span>
+                <span className="ml-2 text-sm text-gray-300">{type}</span>
               </label>
             ))}
           </div>
@@ -911,8 +938,8 @@ export default function OtherForm({
       {localForm.category === "clothing" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdCheckroom className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdCheckroom className="text-cyan-400 mr-2 text-lg" />
               Clothing Type
             </h6>
             <div className="space-y-2">
@@ -928,19 +955,19 @@ export default function OtherForm({
                     }
                     className="form-radio"
                   />
-                  <span className="ml-2 text-sm">{type}</span>
+                  <span className="ml-2 text-sm text-gray-300">{type}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdEdit className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdEdit className="text-cyan-400 mr-2 text-lg" />
               Clothing Details
             </h6>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Specific Item
               </label>
               <input
@@ -959,8 +986,8 @@ export default function OtherForm({
       {localForm.category === "gambling" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdCasino className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdCasino className="text-cyan-400 mr-2 text-lg" />
               Gambling Type
             </h6>
             <div className="space-y-2">
@@ -976,20 +1003,20 @@ export default function OtherForm({
                     }
                     className="form-radio"
                   />
-                  <span className="ml-2 text-sm">{type}</span>
+                  <span className="ml-2 text-sm text-gray-300">{type}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdAttachMoney className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
               Bet Amount
             </h6>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Bet Type
                 </label>
                 <div className="space-y-2">
@@ -1002,7 +1029,9 @@ export default function OtherForm({
                       onChange={(e) => handleChange("betAmount", "100000")}
                       className="form-radio"
                     />
-                    <span className="ml-2 text-sm">Specific amount</span>
+                    <span className="ml-2 text-sm text-gray-300">
+                      Specific amount
+                    </span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -1013,13 +1042,15 @@ export default function OtherForm({
                       onChange={(e) => handleChange("betAmount", "")}
                       className="form-radio"
                     />
-                    <span className="ml-2 text-sm">Negotiable (over $10M)</span>
+                    <span className="ml-2 text-sm text-gray-300">
+                      Negotiable (over $10M)
+                    </span>
                   </label>
                 </div>
               </div>
               {localForm.betAmount !== "" && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Bet Amount
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -1053,8 +1084,8 @@ export default function OtherForm({
       {/* Alliance Details */}
       {localForm.category === "alliance" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdGroup className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdGroup className="text-cyan-400 mr-2 text-lg" />
             Alliance Type
           </h6>
           <div className="space-y-2">
@@ -1068,7 +1099,7 @@ export default function OtherForm({
                   onChange={(e) => handleChange("allianceType", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">{type}</span>
+                <span className="ml-2 text-sm text-gray-300">{type}</span>
               </label>
             ))}
           </div>
@@ -1083,13 +1114,13 @@ export default function OtherForm({
         localForm.category === "clothing") && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdAttachMoney className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
               {localForm.purpose === "Selling" ? "Price" : "Budget"}
             </h6>
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Price Type
                 </label>
                 <div className="space-y-2">
@@ -1102,7 +1133,9 @@ export default function OtherForm({
                       onChange={(e) => handleChange("priceMillion", "false")}
                       className="form-radio"
                     />
-                    <span className="ml-2 text-sm">Specific amount</span>
+                    <span className="ml-2 text-sm text-gray-300">
+                      Specific amount
+                    </span>
                   </label>
                   <label className="flex items-center">
                     <input
@@ -1113,7 +1146,7 @@ export default function OtherForm({
                       onChange={(e) => handleChange("priceMillion", "true")}
                       className="form-radio"
                     />
-                    <span className="ml-2 text-sm">
+                    <span className="ml-2 text-sm text-gray-300">
                       Negotiable (over $300M)
                     </span>
                   </label>
@@ -1121,7 +1154,7 @@ export default function OtherForm({
               </div>
               {!localForm.priceMillion && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Amount
                   </label>
                   <div className="grid grid-cols-2 gap-2">
@@ -1149,8 +1182,8 @@ export default function OtherForm({
           </div>
 
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdLocationOn className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdLocationOn className="text-cyan-400 mr-2 text-lg" />
               Location
             </h6>
             <div>
@@ -1160,32 +1193,50 @@ export default function OtherForm({
                 className="form-input"
               >
                 <option value="">Select location (optional)</option>
-                <option value="the city">The city</option>
-                <option value="Paleto Bay">Paleto Bay</option>
-                <option value="Sandy Shores">Sandy Shores</option>
-                <option value="Vespucci Beach">Vespucci Beach</option>
-                <option value="Del Perro">Del Perro</option>
+                {/* Official Places - Uppercase */}
+                <option value="Vinewood Hills">Vinewood Hills</option>
                 <option value="Rockford Hills">Rockford Hills</option>
-                <option value="Vinewood">Vinewood</option>
-                <option value="Mirror Park">Mirror Park</option>
-                <option value="Davis">Davis</option>
-                <option value="Strawberry">Strawberry</option>
+                <option value="Richman">Richman</option>
+                <option value="Sandy Shores">Sandy Shores</option>
+                <option value="Paleto Bay">Paleto Bay</option>
+                <option value="Postal">Postal</option>
+                <option value="Hospital">Hospital</option>
+                <option value="Capitol">Capitol</option>
+                <option value="Fire Station">Fire Station</option>
+                <option value="Auto Fair">Auto Fair</option>
+                <option value="Bahama Mamas Bar">Bahama Mamas Bar</option>
+                <option value="Tequi-la-la Bar">Tequi-la-la Bar</option>
+                <option value="FIB">FIB</option>
+                <option value="Hotel Spa Bar">Hotel Spa Bar</option>
+                <option value="Pacific Bluffs Country Club">
+                  Pacific Bluffs Country Club
+                </option>
+                <option value="Diamond Resort Bar (Casino Restaurant)">
+                  Diamond Resort Bar (Casino Restaurant)
+                </option>
+                <option value="Vanilla Unicorn Bar">Vanilla Unicorn Bar</option>
+                <option value="Church">Church</option>
+                <option value="Stock Exchange">Stock Exchange</option>
+                <option value="Stadium">Stadium</option>
                 <option value="Chumash">Chumash</option>
-                <option value="Grapeseed">Grapeseed</option>
-                <option value="Harmony">Harmony</option>
-                <option value="Grand Senora Desert">Grand Senora Desert</option>
-                <option value="Sandy Shores Airfield">
-                  Sandy Shores Airfield
-                </option>
-                <option value="Los Santos International Airport">
-                  Los Santos International Airport
-                </option>
-                <option value="Maze Bank Arena">Maze Bank Arena</option>
-                <option value="Diamond Casino">Diamond Casino</option>
-                <option value="Bahama Mamas">Bahama Mamas</option>
-                <option value="Tequi-la-la">Tequi-la-la</option>
-                <option value="Vanilla Unicorn">Vanilla Unicorn</option>
-                <option value="Cayo Perico">Cayo Perico</option>
+                <option value="Lifeinvader">Lifeinvader</option>
+                <option value="Del Perro Pier">Del Perro Pier</option>
+                <option value="Del Perro Beach">Del Perro Beach</option>
+                <option value="Cayo Perico Island">Cayo Perico Island</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Raton Canyon">Raton Canyon</option>
+                <option value="School">School</option>
+                <option value="SAHP">SAHP</option>
+                {/* Unofficial places - Lowercase */}
+                <option value="airport">airport</option>
+                <option value="autosalon">autosalon</option>
+                <option value="beach">beach</option>
+                <option value="beach market">beach market</option>
+                <option value="ghetto">ghetto</option>
+                <option value="post office">post office</option>
+                <option value="train station">train station</option>
+                <option value="yacht">yacht</option>
+                <option value="the city">the city</option>
                 <option value="Custom location">Custom location</option>
               </select>
               {localForm.location === "Custom location" && (
@@ -1203,7 +1254,6 @@ export default function OtherForm({
           </div>
         </div>
       )}
-
 
       {/* Clear Button */}
       <div className="flex justify-end">

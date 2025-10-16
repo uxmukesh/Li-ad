@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { BusinessForm as BusinessFormType } from "@/types";
 import { generateBusinessTemplate } from "@/lib/utils";
+import { location1, location2 } from "@/lib/data";
 import {
   MdBusiness,
   MdAttachMoney,
@@ -37,7 +38,10 @@ export default function BusinessForm({
     }
   }, [localForm, onOutputChange]);
 
-  const handleChange = (field: keyof BusinessFormType, value: string) => {
+  const handleChange = (
+    field: keyof BusinessFormType,
+    value: string | boolean
+  ) => {
     const updatedForm = { ...localForm, [field]: value };
     setLocalForm(updatedForm);
     onChange(updatedForm);
@@ -123,53 +127,10 @@ export default function BusinessForm({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Business Type Selection */}
-        <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdBusiness className="text-orange-600 mr-2 text-lg" />
-            Business Type
-          </h6>
-          <div className="space-y-3">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="businessType"
-                value="business"
-                checked={localForm.type === "business"}
-                onChange={(e) => handleRadioChange("type", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm">Business</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="businessType"
-                value="shares"
-                checked={localForm.type === "shares"}
-                onChange={(e) => handleRadioChange("type", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm">Business Shares</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="businessType"
-                value="services"
-                checked={localForm.type === "services"}
-                onChange={(e) => handleRadioChange("type", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm">Services</span>
-            </label>
-          </div>
-        </div>
-
         {/* Purpose Selection */}
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdAttachMoney className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
             Purpose
           </h6>
           <div className="space-y-3">
@@ -182,7 +143,7 @@ export default function BusinessForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Selling</span>
+              <span className="ml-2 text-sm text-gray-300">Selling</span>
             </label>
             <label className="flex items-center">
               <input
@@ -193,7 +154,7 @@ export default function BusinessForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Buying</span>
+              <span className="ml-2 text-sm text-gray-300">Buying</span>
             </label>
             <label className="flex items-center">
               <input
@@ -204,7 +165,52 @@ export default function BusinessForm({
                 onChange={(e) => handleRadioChange("purpose", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">Trading</span>
+              <span className="ml-2 text-sm text-gray-300">Trading</span>
+            </label>
+          </div>
+        </div>
+
+        {/* Business Type Selection */}
+        <div className="feature-card">
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdBusiness className="text-cyan-400 mr-2 text-lg" />
+            Business Type
+          </h6>
+          <div className="space-y-3">
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="businessType"
+                value="business"
+                checked={localForm.type === "business"}
+                onChange={(e) => handleRadioChange("type", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Business</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="businessType"
+                value="shares"
+                checked={localForm.type === "shares"}
+                onChange={(e) => handleRadioChange("type", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">
+                Business Shares
+              </span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="businessType"
+                value="services"
+                checked={localForm.type === "services"}
+                onChange={(e) => handleRadioChange("type", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Services</span>
             </label>
           </div>
         </div>
@@ -213,8 +219,8 @@ export default function BusinessForm({
       {/* Business Type Selection */}
       {localForm.type === "business" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdStore className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdStore className="text-cyan-400 mr-2 text-lg" />
             Business Type
           </h6>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -228,7 +234,7 @@ export default function BusinessForm({
                   onChange={(e) => handleChange("businessType", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">{type}</span>
+                <span className="ml-2 text-sm text-gray-300">{type}</span>
               </label>
             ))}
           </div>
@@ -238,8 +244,8 @@ export default function BusinessForm({
       {/* Business Shares Selection */}
       {localForm.type === "shares" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdShare className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdShare className="text-cyan-400 mr-2 text-lg" />
             Business Shares
           </h6>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -253,7 +259,7 @@ export default function BusinessForm({
                   onChange={(e) => handleChange("sharesType", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">{type}</span>
+                <span className="ml-2 text-sm text-gray-300">{type}</span>
               </label>
             ))}
           </div>
@@ -263,8 +269,8 @@ export default function BusinessForm({
       {/* Services Selection */}
       {localForm.type === "services" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdBuild className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdBuild className="text-cyan-400 mr-2 text-lg" />
             Service Type
           </h6>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -278,7 +284,7 @@ export default function BusinessForm({
                   onChange={(e) => handleChange("serviceType", e.target.value)}
                   className="form-radio"
                 />
-                <span className="ml-2 text-sm">{type}</span>
+                <span className="ml-2 text-sm text-gray-300">{type}</span>
               </label>
             ))}
           </div>
@@ -289,8 +295,8 @@ export default function BusinessForm({
         {/* Business Number */}
         {(localForm.type === "business" || localForm.type === "shares") && (
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdEdit className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdEdit className="text-cyan-400 mr-2 text-lg" />
               Business Number
             </h6>
             <div>
@@ -311,8 +317,8 @@ export default function BusinessForm({
         {/* Price */}
         {(localForm.type === "business" || localForm.type === "shares") && (
           <div className="feature-card">
-            <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-              <MdAttachMoney className="text-orange-600 mr-2 text-lg" />
+            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+              <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
               {localForm.purpose === "Selling" ? "Price" : "Budget"}
             </h6>
             <div>
@@ -329,13 +335,11 @@ export default function BusinessForm({
                     type="checkbox"
                     checked={localForm.priceMillion}
                     onChange={(e) =>
-                      handleChange("priceMillion", e.target.checked.toString())
+                      handleChange("priceMillion", e.target.checked)
                     }
                     className="form-checkbox"
                   />
-                  <span className="ml-2 text-sm">
-                    Price over $300 Million (will be set to Negotiable)
-                  </span>
+                  <span className="ml-2 text-sm text-gray-300">Million.</span>
                 </label>
               </div>
             </div>
@@ -345,26 +349,149 @@ export default function BusinessForm({
 
       {/* Location */}
       <div className="feature-card">
-        <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-          <MdLocationOn className="text-orange-600 mr-2 text-lg" />
+        <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+          <MdLocationOn className="text-cyan-400 mr-2 text-lg" />
           Location
         </h6>
-        <div>
-          <input
-            type="text"
-            value={localForm.location}
-            onChange={(e) => handleChange("location", e.target.value)}
-            className="form-input"
-            placeholder="Enter location (e.g., near Paleto Bay, in the city)"
-          />
+        {/* Enable Location and Preposition Controls */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <h6 className="text-sm font-medium text-gray-300 mb-2">
+              Enable Location
+            </h6>
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={localForm.location !== ""}
+                onChange={(e) => {
+                  if (!e.target.checked) {
+                    handleChange("location", "");
+                  } else {
+                    // When enabling location, set a default location if none exists
+                    if (localForm.location === "") {
+                      handleChange("location", "at Vinewood Hills");
+                    }
+                  }
+                }}
+                className="form-checkbox"
+              />
+              <span className="ml-2 text-sm text-gray-300">
+                Include location
+              </span>
+            </label>
+          </div>
+
+          <div>
+            <h6 className="text-sm font-medium text-gray-300 mb-2">
+              Preposition
+            </h6>
+            <div className="flex gap-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="locationPreposition"
+                  value="in"
+                  checked={localForm.location.startsWith("in ")}
+                  onChange={(e) => {
+                    const currentLocation = localForm.location.replace(
+                      /^(in |near |at )/,
+                      ""
+                    );
+                    handleChange("location", `in ${currentLocation}`);
+                  }}
+                  className="form-radio"
+                />
+                <span className="ml-2 text-sm text-gray-300">in</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="locationPreposition"
+                  value="near"
+                  checked={localForm.location.startsWith("near ")}
+                  onChange={(e) => {
+                    const currentLocation = localForm.location.replace(
+                      /^(in |near |at )/,
+                      ""
+                    );
+                    handleChange("location", `near ${currentLocation}`);
+                  }}
+                  className="form-radio"
+                />
+                <span className="ml-2 text-sm text-gray-300">near</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="locationPreposition"
+                  value="at"
+                  checked={localForm.location.startsWith("at ")}
+                  onChange={(e) => {
+                    const currentLocation = localForm.location.replace(
+                      /^(in |near |at )/,
+                      ""
+                    );
+                    handleChange("location", `at ${currentLocation}`);
+                  }}
+                  className="form-radio"
+                />
+                <span className="ml-2 text-sm text-gray-300">at</span>
+              </label>
+            </div>
+          </div>
         </div>
+
+        {/* Location Options - 4 columns */}
+        {localForm.location !== "" && (
+          <div>
+            <h6 className="text-sm font-medium text-gray-300 mb-2">
+              Location Options
+            </h6>
+            <div className="grid grid-cols-4 gap-2">
+              {[...location1, ...location2].map((location, index) => {
+                const currentPreposition = localForm.location.startsWith("in ")
+                  ? "in "
+                  : localForm.location.startsWith("near ")
+                  ? "near "
+                  : localForm.location.startsWith("at ")
+                  ? "at "
+                  : "";
+                const cleanLocation = localForm.location.replace(
+                  /^(in |near |at )/,
+                  ""
+                );
+
+                return (
+                  <label key={index} className="flex items-center">
+                    <input
+                      type="radio"
+                      name="businessLocation"
+                      value={location}
+                      checked={cleanLocation === location}
+                      onChange={(e) =>
+                        handleChange(
+                          "location",
+                          currentPreposition + e.target.value
+                        )
+                      }
+                      className="form-radio"
+                    />
+                    <span className="ml-2 text-sm text-gray-300">
+                      {location}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Special Details */}
       {localForm.type === "business" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdEdit className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdEdit className="text-cyan-400 mr-2 text-lg" />
             Special Details
           </h6>
           <div>
@@ -375,7 +502,7 @@ export default function BusinessForm({
               className="form-input"
               placeholder="Enter special details (e.g., with 20 beds, Control)"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               * For plantations: number of beds, for others: Control, etc.
             </p>
           </div>
@@ -385,8 +512,8 @@ export default function BusinessForm({
       {/* Service Description */}
       {localForm.type === "services" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdEdit className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdEdit className="text-cyan-400 mr-2 text-lg" />
             Service Description
           </h6>
           <div>
@@ -399,7 +526,7 @@ export default function BusinessForm({
               placeholder="Enter service description..."
               rows={3}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-400 mt-1">
               * Describe the service being offered
             </p>
           </div>

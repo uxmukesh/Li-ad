@@ -4,47 +4,49 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-r from-amber-50 to-orange-50 mt-16 border-t border-amber-200/50">
+    <footer className="bg-gradient-to-r from-gray-900 to-black mt-16 border-t border-gray-600/50">
       <div className="container mx-auto px-4 py-12">
         <div className="text-center">
           <div className="mb-6">
             <h3 className="text-2xl font-bold gradient-text mb-2">
               Lifeinvader Ads
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Professional ad generation made simple
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-8">
-            <div className="flex items-center text-amber-700">
-              <MdVerified className="text-orange-600 mr-2" />
-              <span className="text-sm">Trusted by thousands</span>
+            <div className="flex items-center text-cyan-400">
+              <MdVerified className="text-cyan-400 mr-2" />
+              <span className="text-sm text-gray-300">
+                Trusted by thousands
+              </span>
             </div>
             {/* <div className="flex items-center text-amber-700">
-              <MdSpeed className="text-orange-600 mr-2" />
+              <MdSpeed className="text-cyan-400 mr-2" />
               <span className="text-sm">Lightning fast</span>
             </div>
             <div className="flex items-center text-amber-700">
-              <MdSecurity className="text-orange-600 mr-2" />
+              <MdSecurity className="text-cyan-400 mr-2" />
               <span className="text-sm">Secure & private</span>
             </div> */}
           </div>
 
-          <div className="border-t border-amber-200/50 pt-6">
-            <p className="text-amber-700 text-sm flex justify-center items-center">
+          <div className="border-t border-gray-600/50 pt-6">
+            <span className="text-gray-300 text-sm">
               All rights reserved. Copyright © {currentYear} Created By&nbsp;
               <a
                 href="https://ravenpixels.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-orange-600 hover:text-orange-700 underline font-medium"
+                className="text-cyan-400 hover:text-cyan-300 underline font-medium"
               >
                 RavenPixels
               </a>
               &nbsp;with&nbsp;
-              <MdFavorite className="text-red-500 text-sm" />
-            </p>
+              <MdFavorite className="text-red-400 inline-block" />
+            </span>
           </div>
         </div>
       </div>

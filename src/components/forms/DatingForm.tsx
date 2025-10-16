@@ -76,8 +76,8 @@ export default function DatingForm({
     <div className="space-y-6">
       {/* Dating Type Selection */}
       <div className="feature-card">
-        <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-          <MdEdit className="text-orange-600 mr-2 text-lg" />
+        <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+          <MdEdit className="text-cyan-400 mr-2 text-lg" />
           Looking for
         </h6>
         <div className="grid grid-cols-2 gap-3">
@@ -91,7 +91,7 @@ export default function DatingForm({
                 onChange={(e) => handleRadioChange("type", e.target.value)}
                 className="form-radio"
               />
-              <span className="ml-2 text-sm">{type.label}</span>
+              <span className="ml-2 text-sm text-gray-300">{type.label}</span>
             </label>
           ))}
         </div>
@@ -100,14 +100,14 @@ export default function DatingForm({
       {/* Specific Person Fields */}
       {localForm.type === "specific-person" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdPerson className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdPerson className="text-cyan-400 mr-2 text-lg" />
             Person Details
           </h6>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                First Name <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
@@ -119,8 +119,8 @@ export default function DatingForm({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Last Name <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
@@ -132,7 +132,7 @@ export default function DatingForm({
               />
             </div>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-400 mt-2">
             * Both first and last name are required for specific person
             searches.
           </p>
@@ -142,12 +142,12 @@ export default function DatingForm({
       {/* Custom Text for Other Types */}
       {localForm.type !== "specific-person" && (
         <div className="feature-card">
-          <h6 className="text-sm font-semibold text-gray-800 mb-4 flex items-center">
-            <MdEdit className="text-orange-600 mr-2 text-lg" />
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdEdit className="text-cyan-400 mr-2 text-lg" />
             Additional Details
           </h6>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Additional Information (Optional)
             </label>
             <textarea

@@ -170,6 +170,7 @@ export function validateAdContent(content: string): {
     "renting out",
     "looking for",
     "looking to",
+    "hiring",
   ];
   const startsWithValid = validStarters.some((starter) =>
     lowerContent.startsWith(starter)
@@ -179,16 +180,21 @@ export function validateAdContent(content: string): {
     return {
       isValid: false,
       reason:
-        'Ad must begin with "Buying", "Selling", "Trading", "Selling or trading", "Renting", or "Renting out".',
+        'Ad must begin with "Buying", "Selling", "Trading", "Selling or trading", "Renting", "Renting out", "Looking for", "Looking to", or "Hiring".',
     };
   }
 
-  // Check for price/budget format
+  // Check for price/budget format (exclude dating ads)
+  const isDatingAd = lowerContent.startsWith("looking for");
   const hasPriceOrBudget =
     lowerContent.includes("price:") ||
     lowerContent.includes("budget:") ||
     lowerContent.includes("rent:");
-  if (!hasPriceOrBudget && !lowerContent.includes("negotiable")) {
+  if (
+    !hasPriceOrBudget &&
+    !lowerContent.includes("negotiable") &&
+    !isDatingAd
+  ) {
     return {
       isValid: false,
       reason:
@@ -362,6 +368,7 @@ export function generateRealEstateTemplate(form: RealEstateForm): string {
   }
 
   // Use "." after the last feature, "and" before the last feature, and use "," between other features
+  // Special rule: "g.s." or "w.h." does not need an addition "." at the end if that is mentioned as the last feature
   let featureString = "";
   if (formattedFeatures.length > 0) {
     if (formattedFeatures.length === 1) {
@@ -433,7 +440,27 @@ export function generateRealEstateTemplate(form: RealEstateForm): string {
   if (purpose === "Renting Out") {
     purposeText = "Renting out";
   }
-  return `${purposeText}${article} ${type}${numberString}${featureString}${locationString}. ${priceLabel}${priceString}`;
+
+  // Handle Casino apartment to Casino penthouse conversion (Rule 263)
+  let propertyType = type;
+  if (
+    type === "apartment" &&
+    locationValue &&
+    locationValue.toLowerCase().includes("casino")
+  ) {
+    propertyType = "penthouse";
+  }
+
+  // Check if the last feature is g.s. or w.h. to avoid double periods
+  const lastFeature = formattedFeatures[formattedFeatures.length - 1];
+  const isLastFeatureGSorWH =
+    lastFeature &&
+    (lastFeature.includes("g.s.") || lastFeature.includes("w.h."));
+
+  // If the last feature is g.s. or w.h., don't add an extra period after location
+  const locationEnding = isLastFeatureGSorWH ? "" : ".";
+
+  return `${purposeText}${article} ${propertyType}${numberString}${featureString}${locationString}${locationEnding} ${priceLabel}${priceString}`;
 }
 
 export function generateAutoTemplate(form: AutoForm): string {
@@ -609,14 +636,20 @@ export function generateWorkTemplate(form: WorkForm): string {
     } else {
       adText += " a job";
     }
+  } else if (jobType === "plantation-workers") {
+    if (type === "hiring") {
+      adText += " workers for solar panel plantations";
+    } else {
+      adText += " solar panel plantation work";
+    }
   }
 
   // Add location if specified
   if (location) {
     if (type === "hiring") {
-      adText += ` at ${location}`;
+      adText += ` ${location}`;
     } else {
-      adText += ` at ${location}`;
+      adText += ` ${location}`;
     }
   }
 
@@ -643,9 +676,12 @@ export function generateWorkTemplate(form: WorkForm): string {
     } else {
       adText += ". Salary: Negotiable";
     }
+  } else {
+    // For "looking for work" ads, add appropriate ending
+    adText += ".";
   }
 
-  return adText + ".";
+  return adText;
 }
 
 // Generate Business template according to Lifeinvader policy
@@ -688,13 +724,19 @@ export function generateBusinessTemplate(form: BusinessForm): string {
 
     // Add price/budget
     if (price) {
-      if (priceMillion) {
-        adText += `. Price: Negotiable`;
+      const priceValue = parseFloat(price);
+      const isOver300Million = priceMillion && priceValue > 300;
+
+      if (isOver300Million) {
+        adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable`;
       } else {
-        adText += `. Price: ${price}`;
+        const formattedPrice = priceMillion ? `${price} Million` : price;
+        adText += `. ${
+          purpose === "Buying" ? "Budget" : "Price"
+        }: ${formattedPrice}`;
       }
     } else {
-      adText += `. Price: Negotiable`;
+      adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable`;
     }
   } else if (type === "shares") {
     // Business shares ads
@@ -710,13 +752,19 @@ export function generateBusinessTemplate(form: BusinessForm): string {
 
     // Add price/budget
     if (price) {
-      if (priceMillion) {
-        adText += `. Price: Negotiable`;
+      const priceValue = parseFloat(price);
+      const isOver300Million = priceMillion && priceValue > 300;
+
+      if (isOver300Million) {
+        adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable`;
       } else {
-        adText += `. Price: ${price}`;
+        const formattedPrice = priceMillion ? `${price} Million` : price;
+        adText += `. ${
+          purpose === "Buying" ? "Budget" : "Price"
+        }: ${formattedPrice}`;
       }
     } else {
-      adText += `. Price: Negotiable`;
+      adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable`;
     }
   } else if (type === "services") {
     // Service ads

@@ -218,7 +218,7 @@ export default function AdGenerator() {
 
   return (
     <div className="container mx-auto px-4 -mt-16 relative z-10">
-      <div className="card bg-white/80 backdrop-blur-[30px] backdrop-saturate-200 shadow-2xs">
+      <div className="card bg-gray-900/90 backdrop-blur-[30px] backdrop-saturate-200 shadow-2xl">
         <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
         <div className="mt-6">{renderActiveTab()}</div>
         <OutputSection output={output} activeTab={activeTab} />

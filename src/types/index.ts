@@ -1,5 +1,5 @@
 export interface RealEstateForm {
-  purpose: "Selling" | "Buying" | "Renting" | "Renting Out";
+  purpose: "Selling" | "Buying" | "Renting" | "Renting Out" | "Trading";
   type: "house" | "apartment" | "mansion" | "penthouse";
   number: string;
   price: string;
@@ -65,7 +65,11 @@ export interface DatingForm {
 
 export interface WorkForm {
   type: "hiring" | "looking-for-work";
-  jobType: "construction-workers" | "specific-role" | "general-workers";
+  jobType:
+    | "construction-workers"
+    | "specific-role"
+    | "general-workers"
+    | "plantation-workers";
   constructionSite: "site-1" | "site-2" | "site-3" | "general";
   specificRole: string;
   location: string;
