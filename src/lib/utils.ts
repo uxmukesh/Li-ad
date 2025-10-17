@@ -6,6 +6,7 @@ import {
   BusinessForm,
   OtherForm,
 } from "@/types";
+import { location1 } from "./data";
 
 // Lifeinvader policy: Prohibited items that should be rejected
 export const PROHIBITED_ITEMS = [
@@ -400,13 +401,13 @@ export function generateRealEstateTemplate(form: RealEstateForm): string {
   // Location formatting with proper capitalization
   let locationString = "";
   if (location && beforeLocation && locationValue) {
-    // Ensure proper capitalization for official locations
-    const capitalizedLocation = locationValue
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
+    // Only capitalize official locations (location1), keep unofficial locations (location2) as lowercase
+    const isOfficialLocation = location1.includes(locationValue);
+    const formattedLocation = isOfficialLocation
+      ? locationValue // Official locations are already properly capitalized
+      : locationValue.toLowerCase(); // Unofficial locations should be lowercase
 
-    locationString = ` ${beforeLocation} ${capitalizedLocation}`;
+    locationString = ` ${beforeLocation} ${formattedLocation}`;
   }
 
   // Price formatting according to policy
@@ -451,14 +452,22 @@ export function generateRealEstateTemplate(form: RealEstateForm): string {
     propertyType = "penthouse";
   }
 
-  // Check if the last feature is g.s. or w.h. to avoid double periods
-  const lastFeature = formattedFeatures[formattedFeatures.length - 1];
-  const isLastFeatureGSorWH =
-    lastFeature &&
-    (lastFeature.includes("g.s.") || lastFeature.includes("w.h."));
+  // Check if the feature string ends with g.s. or w.h.
+  // This handles all cases where g.s./w.h. appears at the end of the feature list
+  const featureStringEndsWithGSorWH =
+    featureString.endsWith("g.s.") ||
+    featureString.endsWith("w.h.") ||
+    featureString.endsWith("g.s. and") ||
+    featureString.endsWith("w.h. and") ||
+    featureString.endsWith("g.s.,") ||
+    featureString.endsWith("w.h.,");
 
-  // If the last feature is g.s. or w.h., don't add an extra period after location
-  const locationEnding = isLastFeatureGSorWH ? "" : ".";
+  // Only remove the period if g.s./w.h. is at the end of the feature string
+  // AND there's no location or other content after the features
+  const hasContentAfterFeatures =
+    locationString && locationString.trim() !== "";
+  const locationEnding =
+    featureStringEndsWithGSorWH && !hasContentAfterFeatures ? "" : ".";
 
   return `${purposeText}${article} ${propertyType}${numberString}${featureString}${locationString}${locationEnding} ${priceLabel}${priceString}`;
 }
@@ -710,7 +719,15 @@ export function generateBusinessTemplate(form: BusinessForm): string {
       if (businessNumber) {
         adText += ` ${businessType} №${businessNumber}`;
       } else {
-        adText += ` ${businessType} business`;
+        // Check if businessType already contains "business" to avoid duplication
+        const needsBusinessSuffix = !businessType
+          .toLowerCase()
+          .includes("business");
+        // Only add article "a" for "private business"
+        const needsArticle = businessType.toLowerCase() === "private business";
+        adText += `${needsArticle ? " a" : ""} ${businessType}${
+          needsBusinessSuffix ? " business" : ""
+        }`;
       }
     }
 
@@ -730,7 +747,7 @@ export function generateBusinessTemplate(form: BusinessForm): string {
       if (isOver300Million) {
         adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable`;
       } else {
-        const formattedPrice = priceMillion ? `${price} Million` : price;
+        const formattedPrice = priceMillion ? `$${price} Million` : `$${price}`;
         adText += `. ${
           purpose === "Buying" ? "Budget" : "Price"
         }: ${formattedPrice}`;
@@ -758,7 +775,7 @@ export function generateBusinessTemplate(form: BusinessForm): string {
       if (isOver300Million) {
         adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable`;
       } else {
-        const formattedPrice = priceMillion ? `${price} Million` : price;
+        const formattedPrice = priceMillion ? `$${price} Million` : `$${price}`;
         adText += `. ${
           purpose === "Buying" ? "Budget" : "Price"
         }: ${formattedPrice}`;
