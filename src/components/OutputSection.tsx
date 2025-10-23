@@ -154,6 +154,18 @@ export default function OutputSection({
             </div>
           </div>
         )}
+
+        {/* AdSense Ad Placement */}
+        {output && (
+          <div className="mt-6 text-center">
+            <div className="bg-gray-800/40 rounded-lg p-4 border border-gray-600/30">
+              <p className="text-gray-400 text-xs mb-2">Advertisement</p>
+              <div className="bg-gray-700/50 rounded h-20 flex items-center justify-center">
+                <span className="text-gray-500 text-sm">Ad Space</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

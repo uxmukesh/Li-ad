@@ -33,6 +33,67 @@ export default function Footer() {
             </div> */}
           </div>
 
+          {/* Monetization Section */}
+          <div className="border-t border-gray-600/50 pt-6 mb-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+              <div className="text-center">
+                <p className="text-gray-300 text-sm mb-2">Support this tool:</p>
+                <a
+                  href="https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors text-sm font-medium"
+                >
+                  ☕ Buy me a coffee
+                </a>
+              </div>
+            </div>
+
+            {/* Affiliate Links */}
+            <div className="text-center">
+              <p className="text-gray-400 text-xs mb-2">
+                Recommended services:
+              </p>
+              <div className="flex flex-wrap justify-center gap-2 text-xs">
+                <a
+                  href="https://www.zillow.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 underline"
+                >
+                  Zillow
+                </a>
+                <span className="text-gray-500">•</span>
+                <a
+                  href="https://www.carmax.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 underline"
+                >
+                  CarMax
+                </a>
+                <span className="text-gray-500">•</span>
+                <a
+                  href="https://www.match.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 underline"
+                >
+                  Match.com
+                </a>
+                <span className="text-gray-500">•</span>
+                <a
+                  href="https://www.quickbooks.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 underline"
+                >
+                  QuickBooks
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div className="border-t border-gray-600/50 pt-6">
             <span className="text-gray-300 text-sm">
               All rights reserved. Copyright © {currentYear} Created By&nbsp;
