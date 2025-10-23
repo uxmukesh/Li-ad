@@ -38,19 +38,37 @@ export default function Footer() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
               <div className="text-center">
                 <p className="text-gray-300 text-sm mb-2">Support this tool:</p>
-                <a
-                  href="https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors text-sm font-medium"
-                >
-                  ☕ Buy me a coffee
-                </a>
+                <div className="flex flex-wrap justify-center gap-2">
+                  <a
+                    href="https://buymeacoffee.com/theravenpixels"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors text-sm font-medium"
+                  >
+                    ☕ Buy me a coffee
+                  </a>
+                  {/* <a
+                    href="https://rzp.io/l/your-payment-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium"
+                  >
+                    💳 Razorpay
+                  </a> */}
+                  <a
+                    href="upi://pay?pa=ravenpixels@ybl&pn=RavenPixels&cu=INR"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium"
+                  >
+                    📱 UPI
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Affiliate Links */}
-            <div className="text-center">
+            {/* <div className="text-center">
               <p className="text-gray-400 text-xs mb-2">
                 Recommended services:
               </p>
@@ -91,7 +109,7 @@ export default function Footer() {
                   QuickBooks
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="border-t border-gray-600/50 pt-6">

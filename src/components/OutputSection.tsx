@@ -83,7 +83,6 @@ export default function OutputSection({
           <input
             type="text"
             value={output}
-            readOnly
             className="form-input flex-1 bg-gray-800/80"
             placeholder="Generated ad will appear here..."
           />
