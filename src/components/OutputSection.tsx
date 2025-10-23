@@ -19,11 +19,13 @@ import { FaInfinity } from "react-icons/fa";
 interface OutputSectionProps {
   output: string;
   activeTab?: TabType;
+  onOutputChange?: (output: string) => void;
 }
 
 export default function OutputSection({
   output,
   activeTab,
+  onOutputChange,
 }: OutputSectionProps) {
   const [validation, setValidation] = useState<{
     isValid: boolean;
@@ -83,6 +85,7 @@ export default function OutputSection({
           <input
             type="text"
             value={output}
+            onChange={(e) => onOutputChange?.(e.target.value)}
             className="form-input flex-1 bg-gray-800/80"
             placeholder="Generated ad will appear here..."
           />
