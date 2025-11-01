@@ -101,8 +101,8 @@ export default function AdGenerator() {
   });
 
   const [otherForm, setOtherForm] = useState<OtherForm>({
-    category: "party",
-    purpose: "Looking for",
+    category: "clothing",
+    purpose: "Selling",
     partyLocation: "",
     partyType: "",
     serviceType: "",

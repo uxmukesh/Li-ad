@@ -42,22 +42,27 @@ export default function OtherForm({
     }
   }, [localForm, onOutputChange]);
 
-  const handleChange = (field: keyof OtherFormType, value: string) => {
+  const handleChange = (field: keyof OtherFormType, value: any) => {
     const updatedForm = { ...localForm, [field]: value };
     setLocalForm(updatedForm);
     onChange(updatedForm);
   };
 
   const handleRadioChange = (field: keyof OtherFormType, value: string) => {
-    const updatedForm = { ...localForm, [field]: value };
-    setLocalForm(updatedForm);
-    onChange(updatedForm);
+    handleChange(field, value);
+  };
+
+  const handleCheckboxChange = (
+    field: keyof OtherFormType,
+    checked: boolean
+  ) => {
+    handleChange(field, checked);
   };
 
   const clearForm = () => {
     const clearedForm: OtherFormType = {
-      category: "party",
-      purpose: "Looking for",
+      category: "clothing",
+      purpose: "Selling",
       partyLocation: "",
       partyType: "",
       serviceType: "",
@@ -312,6 +317,29 @@ export default function OtherForm({
     "Grand RP collection",
   ];
 
+  const clothingItems = [
+    "Shirt",
+    "T-Shirt",
+    "Jacket",
+    "Pants",
+    "Jeans",
+    "Shoes",
+    "Boots",
+    "Hat",
+    "Cap",
+    "Mask",
+    "Gloves",
+    "Watch",
+    "Glasses",
+    "Sunglasses",
+    "Jewelry",
+    "Full set",
+    "Outfit",
+    "Costume",
+    "Helmet",
+    "Accessories",
+  ];
+
   const gamblingTypes = ["Dice", "Poker", "Lottery"];
 
   const allianceTypes = [
@@ -323,115 +351,6 @@ export default function OtherForm({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Category Selection */}
-        <div className="feature-card">
-          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
-            <MdPartyMode className="text-cyan-400 mr-2 text-lg" />
-            Category
-          </h6>
-          <div className="space-y-3">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="party"
-                checked={localForm.category === "party"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Party</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="services"
-                checked={localForm.category === "services"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Services</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="items"
-                checked={localForm.category === "items"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Items</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="pets"
-                checked={localForm.category === "pets"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Pets</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="resources"
-                checked={localForm.category === "resources"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Resources</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="containers"
-                checked={localForm.category === "containers"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Containers</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="clothing"
-                checked={localForm.category === "clothing"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Clothing</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="gambling"
-                checked={localForm.category === "gambling"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Gambling</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="alliance"
-                checked={localForm.category === "alliance"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Alliance</span>
-            </label>
-          </div>
-        </div>
-
         {/* Purpose Selection */}
         <div className="feature-card">
           <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
@@ -493,6 +412,118 @@ export default function OtherForm({
                 className="form-radio"
               />
               <span className="ml-2 text-sm text-gray-300">Offering</span>
+            </label>
+          </div>
+        </div>
+
+        {/* Category Selection */}
+        <div className="feature-card">
+          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+            <MdPartyMode className="text-cyan-400 mr-2 text-lg" />
+            Category
+          </h6>
+          <div className="space-y-3">
+            {/* Most used categories first */}
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="clothing"
+                checked={localForm.category === "clothing"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Clothing</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="items"
+                checked={localForm.category === "items"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Items</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="containers"
+                checked={localForm.category === "containers"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Containers</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="resources"
+                checked={localForm.category === "resources"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Resources</span>
+            </label>
+            {/* Other categories */}
+            <div className="border-t border-gray-600/30 my-2"></div>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="party"
+                checked={localForm.category === "party"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Party</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="services"
+                checked={localForm.category === "services"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Services</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="pets"
+                checked={localForm.category === "pets"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Pets</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="gambling"
+                checked={localForm.category === "gambling"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Gambling</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="category"
+                value="alliance"
+                checked={localForm.category === "alliance"}
+                onChange={(e) => handleRadioChange("category", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">Alliance</span>
             </label>
           </div>
         </div>
@@ -582,6 +613,9 @@ export default function OtherForm({
               <MdInventory className="text-cyan-400 mr-2 text-lg" />
               Item Category
             </h6>
+            <p className="text-xs text-gray-400 mb-3">
+              Select a category or specify item type below
+            </p>
             <div className="space-y-2 max-h-60 overflow-y-auto">
               {itemCategories.map((category) => (
                 <label key={category} className="flex items-center">
@@ -590,9 +624,13 @@ export default function OtherForm({
                     name="itemCategory"
                     value={category}
                     checked={localForm.itemCategory === category}
-                    onChange={(e) =>
-                      handleChange("itemCategory", e.target.value)
-                    }
+                    onChange={(e) => {
+                      handleChange("itemCategory", e.target.value);
+                      // Clear itemType when category changes for better UX
+                      if (localForm.itemType) {
+                        handleChange("itemType", "");
+                      }
+                    }}
                     className="form-radio"
                   />
                   <span className="ml-2 text-sm text-gray-300">{category}</span>
@@ -609,14 +647,14 @@ export default function OtherForm({
             <div className="space-y-3">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Item Type
+                  Specific Item Type
                 </label>
                 <select
                   value={localForm.itemType}
                   onChange={(e) => handleChange("itemType", e.target.value)}
                   className="form-input"
                 >
-                  <option value="">Select item type</option>
+                  <option value="">Select specific item type (optional)</option>
                   <option value="automatic drill">Automatic drill</option>
                   <option value="automatic sawmill">Automatic sawmill</option>
                   <option value="automatic rod">Automatic rod</option>
@@ -749,27 +787,32 @@ export default function OtherForm({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Quantity
+                  Quantity (Optional)
                 </label>
                 <input
                   type="number"
                   value={localForm.itemQuantity}
-                  onChange={(e) => handleChange("itemQuantity", e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "" || (!isNaN(parseInt(value)) && parseInt(value) > 0)) {
+                      handleChange("itemQuantity", value);
+                    }
+                  }}
                   className="form-input"
-                  placeholder="Enter quantity"
+                  placeholder="Leave empty for single item"
                   min="1"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Quality
+                  Quality (Optional)
                 </label>
                 <select
                   value={localForm.itemQuality}
                   onChange={(e) => handleChange("itemQuality", e.target.value)}
                   className="form-input"
                 >
-                  <option value="">Select quality</option>
+                  <option value="">No specific quality</option>
                   <option value="low">Low quality</option>
                   <option value="medium">Medium quality</option>
                   <option value="high">High quality</option>
@@ -864,7 +907,10 @@ export default function OtherForm({
               <MdNature className="text-cyan-400 mr-2 text-lg" />
               Resource Type
             </h6>
-            <div className="space-y-2">
+            <p className="text-xs text-gray-400 mb-3">
+              Select the type of resource
+            </p>
+            <div className="space-y-2 max-h-60 overflow-y-auto">
               {resourceTypes.map((type) => (
                 <label key={type} className="flex items-center">
                   <input
@@ -890,18 +936,24 @@ export default function OtherForm({
             </h6>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Quantity
+                Quantity (Optional)
               </label>
               <input
                 type="number"
                 value={localForm.resourceQuantity}
-                onChange={(e) =>
-                  handleChange("resourceQuantity", e.target.value)
-                }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "" || (!isNaN(parseInt(value)) && parseInt(value) > 0)) {
+                    handleChange("resourceQuantity", value);
+                  }
+                }}
                 className="form-input"
-                placeholder="Enter quantity"
+                placeholder="Leave empty for single unit"
                 min="1"
               />
+              <p className="text-xs text-gray-400 mt-2">
+                Specify quantity or leave empty for a single unit
+              </p>
             </div>
           </div>
         </div>
@@ -914,6 +966,9 @@ export default function OtherForm({
             <MdCardGiftcard className="text-cyan-400 mr-2 text-lg" />
             Container Type
           </h6>
+          <p className="text-xs text-gray-400 mb-3">
+            Select the type of container you're {localForm.purpose.toLowerCase()}
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
             {containerTypes.map((type) => (
               <label key={type} className="flex items-center">
@@ -940,9 +995,9 @@ export default function OtherForm({
           <div className="feature-card">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
               <MdCheckroom className="text-cyan-400 mr-2 text-lg" />
-              Clothing Type
+              Clothing Category
             </h6>
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-60 overflow-y-auto">
               {clothingTypes.map((type) => (
                 <label key={type} className="flex items-center">
                   <input
@@ -950,33 +1005,59 @@ export default function OtherForm({
                     name="clothingType"
                     value={type}
                     checked={localForm.clothingType === type}
-                    onChange={(e) =>
-                      handleChange("clothingType", e.target.value)
-                    }
+                    onChange={(e) => {
+                      handleChange("clothingType", e.target.value);
+                      // Clear clothingItem when category changes
+                      handleChange("clothingItem", "");
+                    }}
                     className="form-radio"
                   />
                   <span className="ml-2 text-sm text-gray-300">{type}</span>
                 </label>
               ))}
             </div>
+            <p className="text-xs text-gray-400 mt-3">
+              Select a clothing category or specify a custom item below
+            </p>
           </div>
 
           <div className="feature-card">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
               <MdEdit className="text-cyan-400 mr-2 text-lg" />
-              Clothing Details
+              Specific Item (Optional)
             </h6>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Specific Item
-              </label>
-              <input
-                type="text"
-                value={localForm.clothingItem}
-                onChange={(e) => handleChange("clothingItem", e.target.value)}
-                className="form-input"
-                placeholder="Enter specific clothing item"
-              />
+            <div className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Quick select or enter custom
+                </label>
+                <select
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      handleChange("clothingItem", e.target.value);
+                    }
+                  }}
+                  className="form-input mb-2"
+                >
+                  <option value="">-- Quick select common items --</option>
+                  {clothingItems.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  value={localForm.clothingItem}
+                  onChange={(e) => handleChange("clothingItem", e.target.value)}
+                  className="form-input"
+                  placeholder="e.g., Red leather jacket, Designer shoes, or leave empty"
+                />
+              </div>
+              <p className="text-xs text-gray-400">
+                Specify a specific item name, or leave empty to use only the category above
+              </p>
             </div>
           </div>
         </div>
@@ -1116,69 +1197,34 @@ export default function OtherForm({
           <div className="feature-card">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
               <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
-              {localForm.purpose === "Selling" ? "Price" : "Budget"}
+              {localForm.purpose === "Selling" ? "Price:" : "Budget:"}
             </h6>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Price Type
-                </label>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="priceType"
-                      value="specific"
-                      checked={!localForm.priceMillion}
-                      onChange={(e) => handleChange("priceMillion", "false")}
-                      className="form-radio"
-                    />
-                    <span className="ml-2 text-sm text-gray-300">
-                      Specific amount
-                    </span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="priceType"
-                      value="negotiable"
-                      checked={localForm.priceMillion}
-                      onChange={(e) => handleChange("priceMillion", "true")}
-                      className="form-radio"
-                    />
-                    <span className="ml-2 text-sm text-gray-300">
-                      Negotiable (over $300M)
-                    </span>
-                  </label>
-                </div>
-              </div>
-              {!localForm.priceMillion && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Amount
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <input
-                      type="number"
-                      value={localForm.price.replace(/[$,]/g, "")}
-                      onChange={(e) =>
-                        handleChange("price", `$${e.target.value}`)
-                      }
-                      className="form-input"
-                      placeholder="100000"
-                      min="1"
-                    />
-                    <input
-                      type="text"
-                      value={localForm.price}
-                      onChange={(e) => handleChange("price", e.target.value)}
-                      className="form-input"
-                      placeholder="e.g., $100.000"
-                    />
-                  </div>
-                </div>
-              )}
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={localForm.price}
+                onChange={(e) => handleChange("price", e.target.value)}
+                className="form-input flex-1"
+                placeholder="Amount"
+              />
+              <button
+                onClick={() => handleChange("price", "")}
+                className="btn-secondary text-xs px-2 py-1"
+              >
+                Clear
+              </button>
             </div>
+            <label className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                checked={localForm.priceMillion}
+                onChange={(e) =>
+                  handleCheckboxChange("priceMillion", e.target.checked)
+                }
+                className="form-checkbox"
+              />
+              <span className="ml-2 text-sm text-gray-300">Million.</span>
+            </label>
           </div>
 
           <div className="feature-card">
