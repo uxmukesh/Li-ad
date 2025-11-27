@@ -114,6 +114,7 @@ export interface OtherForm {
   itemType: string;
   itemQuantity: string;
   itemQuality: string;
+  luminousWheelsType: string;
   petType: string;
   petName: string;
   resourceType: string;
@@ -121,6 +122,7 @@ export interface OtherForm {
   containerType: string;
   clothingType: string;
   clothingItem: string;
+  clothingGender: "male" | "female" | "";
   gamblingType: string;
   betAmount: string;
   allianceType: string;

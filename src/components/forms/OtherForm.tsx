@@ -4,6 +4,25 @@ import { useState, useEffect } from "react";
 import { OtherForm as OtherFormType } from "@/types";
 import { generateOtherTemplate } from "@/lib/utils";
 import {
+  maleClothingNames,
+  femaleClothingNames,
+  resourceTypes,
+  containerTypes,
+  itemTypesByCategory,
+  partyLocations,
+  partyTypes,
+  serviceTypes,
+  itemCategories,
+  petTypes,
+  shoulderPets,
+  cagedPets,
+  clothingTypes,
+  gamblingTypes,
+  allianceTypes,
+  location1,
+  location2,
+} from "@/lib/data";
+import {
   MdPartyMode,
   MdBuild,
   MdInventory,
@@ -30,6 +49,11 @@ export default function OtherForm({
   onOutputChange,
 }: OtherFormProps) {
   const [localForm, setLocalForm] = useState<OtherFormType>(form);
+  const [filteredClothingItems, setFilteredClothingItems] = useState<string[]>(
+    []
+  );
+  const [showClothingSuggestions, setShowClothingSuggestions] = useState(false);
+  const [clothingWarning, setClothingWarning] = useState<string>("");
 
   useEffect(() => {
     setLocalForm(form);
@@ -59,6 +83,98 @@ export default function OtherForm({
     handleChange(field, checked);
   };
 
+  // Combine male and female clothing names for search
+  const allClothingNames = [...maleClothingNames, ...femaleClothingNames];
+
+  const filterClothingItems = (
+    value: string,
+    gender: "male" | "female" | ""
+  ) => {
+    if (value.length > 0) {
+      // Filter based on selected gender
+      let sourceArray = allClothingNames;
+      if (gender === "male") {
+        sourceArray = maleClothingNames;
+      } else if (gender === "female") {
+        sourceArray = femaleClothingNames;
+      }
+
+      const filtered = sourceArray
+        .filter((item) => item.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 10);
+      setFilteredClothingItems(filtered);
+      setShowClothingSuggestions(true);
+    } else {
+      setShowClothingSuggestions(false);
+    }
+  };
+
+  const handleClothingItemChange = (value: string) => {
+    handleChange("clothingItem", value);
+    filterClothingItems(value, localForm.clothingGender);
+    // Validate when user types
+    if (value && localForm.clothingGender) {
+      validateClothingItem(value, localForm.clothingGender);
+    } else {
+      setClothingWarning("");
+    }
+  };
+
+  const handleGenderChange = (gender: "male" | "female" | "") => {
+    handleChange("clothingGender", gender);
+    // Re-filter if there's already text in the search using the new gender
+    if (localForm.clothingItem.length > 0) {
+      filterClothingItems(localForm.clothingItem, gender);
+      // Validate the existing item with new gender
+      validateClothingItem(localForm.clothingItem, gender);
+    } else {
+      setClothingWarning("");
+    }
+  };
+
+  const selectClothingItem = (item: string) => {
+    handleChange("clothingItem", item);
+    setShowClothingSuggestions(false);
+    validateClothingItem(item, localForm.clothingGender);
+  };
+
+  // Get item types for selected category
+  const getItemTypesForCategory = (category: string): string[] => {
+    if (!category) return [];
+    return itemTypesByCategory[category] || [];
+  };
+
+  // Check if category has only one item
+  const hasSingleItem = (category: string): boolean => {
+    const items = getItemTypesForCategory(category);
+    return items.length === 1;
+  };
+
+  const validateClothingItem = (
+    item: string,
+    gender: "male" | "female" | ""
+  ) => {
+    if (!item || !gender) {
+      setClothingWarning("");
+      return;
+    }
+
+    const isInMaleList = maleClothingNames.some(
+      (name) => name.toLowerCase() === item.toLowerCase()
+    );
+    const isInFemaleList = femaleClothingNames.some(
+      (name) => name.toLowerCase() === item.toLowerCase()
+    );
+
+    if (gender === "male" && !isInMaleList && isInFemaleList) {
+      setClothingWarning("This clothing item is not available for men.");
+    } else if (gender === "female" && !isInFemaleList && isInMaleList) {
+      setClothingWarning("This clothing item is not available for women.");
+    } else {
+      setClothingWarning("");
+    }
+  };
+
   const clearForm = () => {
     const clearedForm: OtherFormType = {
       category: "clothing",
@@ -71,6 +187,7 @@ export default function OtherForm({
       itemType: "",
       itemQuantity: "",
       itemQuality: "",
+      luminousWheelsType: "",
       petType: "",
       petName: "",
       resourceType: "",
@@ -78,6 +195,7 @@ export default function OtherForm({
       containerType: "",
       clothingType: "",
       clothingItem: "",
+      clothingGender: "",
       gamblingType: "",
       betAmount: "",
       allianceType: "",
@@ -89,264 +207,6 @@ export default function OtherForm({
     setLocalForm(clearedForm);
     onChange(clearedForm);
   };
-
-  const partyLocations = [
-    "Houses/apartment",
-    "beach",
-    "yacht",
-    "Bahama Mamas Bar",
-    "Tequi-la-la Bar",
-    "Stadium",
-    "Diamond Resort Bar (Casino Restaurant)",
-    "Vanilla Unicorn Bar",
-    "Hotel Spa Bar",
-    "Cayo Perico Island",
-    "Vinewood Hills",
-    "Rockford Hills",
-    "Richman",
-    "Sandy Shores",
-    "Paleto Bay",
-    "Chumash",
-    "Del Perro Pier",
-    "Del Perro Beach",
-    "Raton Canyon",
-    "Hotel",
-    "School",
-    "SAHP",
-    "FIB",
-    "Hospital",
-    "Capitol",
-    "Fire Station",
-    "Auto Fair",
-    "Church",
-    "Stock Exchange",
-    "Lifeinvader",
-    "Postal",
-    "airport",
-    "autosalon",
-    "beach market",
-    "ghetto",
-    "post office",
-    "train station",
-    "the city",
-  ];
-
-  const partyTypes = [
-    "Party",
-    "Pool party",
-    "Wedding",
-    "Car meet",
-    "Exclusive car meet",
-  ];
-
-  const serviceTypes = [
-    "Looking for a lawyer",
-    "Looking for a personal driver",
-    "Looking for a professional dancer",
-    "Looking for a professional singer",
-    "Looking for a DJ",
-    "Wedding at Church",
-    "Looking to play poker",
-  ];
-
-  const itemCategories = [
-    "Automatic tools",
-    "Inventory",
-    "Backpack skins",
-    "Batteries",
-    "Pet items",
-    "Canisters",
-    "Chargers",
-    "Christmas resources",
-    "Containers",
-    "Dice",
-    "Fish",
-    "Fishing rods",
-    "Fruits and vegetables",
-    "Fireworks",
-    "Fuel for resource extraction",
-    "Grand tickets",
-    "Hookahs",
-    "Juices",
-    "Leash",
-    "Letters",
-    "License plates",
-    "Lottery tickets",
-    "Luminous wheels",
-    "Masks",
-    "Milk",
-    "Mining resources",
-    "Mushrooms",
-    "Paint cans",
-    "Pearls",
-    "Pet food",
-    "Pickaxes",
-    "Prime",
-    "Repair kits",
-    "Resource barrels",
-    "Resource Miners tickets",
-    "Seeds",
-    "Snow",
-    "Solar panels",
-    "SIM cards",
-    "Scrap metal",
-    "Top quality metal",
-    "Threads",
-    "Timber",
-    "Tokens",
-    "Tonic treats",
-    "Video cards",
-    "Wires",
-    "Tuning parts",
-  ];
-
-  const petTypes = ["Shoulder pets", "Caged pets"];
-
-  const shoulderPets = [
-    "six tailed fox on shoulder pet",
-    "hamster on shoulder pet",
-    "strong chicken on shoulder pet",
-    "owl on shoulder pet",
-    "flying bear on shoulder pet",
-    "toothless dragon on shoulder pet",
-    "leon brawl on shoulder pet",
-    "lovely bird egg on shoulder pet",
-    "Mr. Robot friend on shoulder pet",
-    "el primo corazon brawl on shoulder pet",
-    "black voron on shoulder pet",
-  ];
-
-  const cagedPets = [
-    "cage with a Border Collie",
-    "cage with a Cat",
-    "cage with a Cougar",
-    "cage with a Cyberdog",
-    "cage with a Husky",
-    "cage with a Panther",
-    "cage with a Pig",
-    "cage with a Poodle",
-    "cage with a Monkey",
-    "cage with a Pug",
-    "cage with a Christmas Elf",
-    "cage with a Santa Claus",
-    "cage with a Fancy bear",
-    "cage with a Cute Hippo",
-    "cage with a New years Husky",
-    "cage with a Rabbit",
-    "cage with a Rat",
-    "cage with a Retriever",
-    "cage with a Robobeast",
-    "cage with a Rooster",
-    "cage with a Puma",
-    "cage with a Rottweiler",
-    "cage with a Westie",
-    "cage with a Kitty Bunny",
-    "cage with a Duckling",
-    "cage with a Panda",
-    "cage with a Lion Cub",
-    "cage with a Mini Robot",
-  ];
-
-  const resourceTypes = [
-    "Copper",
-    "Emeralds",
-    "Rubies",
-    "Diamonds",
-    "Timber",
-    "Snow",
-    "Scrap metal",
-    "Top quality metal",
-    "Threads",
-    "Solar panels",
-    "Fuel for resource extraction",
-  ];
-
-  const containerTypes = [
-    "Valuable container",
-    "Desert scarf mask container",
-    "Biker container",
-    "Brand T-shirts 2 container",
-    "Trucker container",
-    "Racer container",
-    "Grand racers container",
-    "Ingrand container",
-    "Progen container",
-    "Maserati container",
-    "Benefactor container",
-    "Gardener container",
-    "Rare love container",
-    "Regular love container",
-    "Renault container",
-    "Resources container",
-    "Diver container",
-    "Organization container",
-    "Sphere of influence container",
-    "Wheels 1 container",
-    "Wheels 2 container",
-    "Wheels 3 container",
-    "Old autumn gold container",
-    "Old summer gold container",
-    "Old winter gold container",
-    "School container",
-    "Arena container",
-    "Daily container",
-    "Halloween container",
-    "Womens gift container of type 1",
-    "Womens gift container of type 2",
-    "Mens gift container of type 1",
-    "Mens gift container of type 2",
-    "Blue womens top container of type 4",
-    "Black womens top container of type 4",
-    "Benefactor E500 (W124) container",
-    "Daily study of the organization container",
-    "Captured caravans container",
-    "Delivered caravans container",
-    "Valentine 2025 container",
-  ];
-
-  const clothingTypes = [
-    "Shirts for men",
-    "Shoes for women",
-    "TRON full set",
-    "TRON helmet",
-    "Lui Vi full set",
-    "Clothing for women",
-    "Clothing for men",
-    "Desert scarf mask",
-    "Luminous clothes",
-    "Grand RP collection",
-  ];
-
-  const clothingItems = [
-    "Shirt",
-    "T-Shirt",
-    "Jacket",
-    "Pants",
-    "Jeans",
-    "Shoes",
-    "Boots",
-    "Hat",
-    "Cap",
-    "Mask",
-    "Gloves",
-    "Watch",
-    "Glasses",
-    "Sunglasses",
-    "Jewelry",
-    "Full set",
-    "Outfit",
-    "Costume",
-    "Helmet",
-    "Accessories",
-  ];
-
-  const gamblingTypes = ["Dice", "Poker", "Lottery"];
-
-  const allianceTypes = [
-    "Looking for an alliance",
-    "Family alliance",
-    "Business alliance",
-  ];
 
   return (
     <div className="space-y-6">
@@ -445,28 +305,6 @@ export default function OtherForm({
                 className="form-radio"
               />
               <span className="ml-2 text-sm text-gray-300">Items</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="containers"
-                checked={localForm.category === "containers"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Containers</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="resources"
-                checked={localForm.category === "resources"}
-                onChange={(e) => handleRadioChange("category", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">Resources</span>
             </label>
             {/* Other categories */}
             <div className="border-t border-gray-600/30 my-2"></div>
@@ -607,16 +445,24 @@ export default function OtherForm({
 
       {/* Items Details */}
       {localForm.category === "items" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
+          {/* Item Category Selection */}
           <div className="feature-card">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
               <MdInventory className="text-cyan-400 mr-2 text-lg" />
               Item Category
             </h6>
             <p className="text-xs text-gray-400 mb-3">
-              Select a category or specify item type below
+              Select a category to see available items
             </p>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
+            <div
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-flow-col auto-rows-max gap-2"
+              style={{
+                gridTemplateRows: `repeat(${Math.ceil(
+                  itemCategories.length / 4
+                )}, minmax(0, auto))`,
+              }}
+            >
               {itemCategories.map((category) => (
                 <label key={category} className="flex items-center">
                   <input
@@ -625,11 +471,16 @@ export default function OtherForm({
                     value={category}
                     checked={localForm.itemCategory === category}
                     onChange={(e) => {
-                      handleChange("itemCategory", e.target.value);
-                      // Clear itemType when category changes for better UX
-                      if (localForm.itemType) {
-                        handleChange("itemType", "");
-                      }
+                      const selectedCategory = e.target.value;
+                      const items = getItemTypesForCategory(selectedCategory);
+                      const updatedForm = {
+                        ...localForm,
+                        itemCategory: selectedCategory,
+                        // Auto-select itemType if category has only one item (like Scrap metal)
+                        itemType: items.length === 1 ? items[0] : "",
+                      };
+                      setLocalForm(updatedForm);
+                      onChange(updatedForm);
                     }}
                     className="form-radio"
                   />
@@ -639,187 +490,293 @@ export default function OtherForm({
             </div>
           </div>
 
+          {/* Item Type Selection - Grid Display */}
+          {localForm.itemCategory && (
+            <div className="feature-card">
+              <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+                <MdEdit className="text-cyan-400 mr-2 text-lg" />
+                Item Type
+              </h6>
+              {localForm.itemCategory === "Inventory" ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Quality
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="itemQuality"
+                          value="low"
+                          checked={localForm.itemQuality === "low"}
+                          onChange={(e) => {
+                            handleChange("itemQuality", e.target.value);
+                            handleChange("itemType", "low quality inventory");
+                          }}
+                          className="form-radio"
+                        />
+                        <span className="ml-2 text-sm text-gray-300">
+                          Low quality
+                        </span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="itemQuality"
+                          value="medium"
+                          checked={localForm.itemQuality === "medium"}
+                          onChange={(e) => {
+                            handleChange("itemQuality", e.target.value);
+                            handleChange(
+                              "itemType",
+                              "medium quality inventory"
+                            );
+                          }}
+                          className="form-radio"
+                        />
+                        <span className="ml-2 text-sm text-gray-300">
+                          Medium quality
+                        </span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="itemQuality"
+                          value="high"
+                          checked={localForm.itemQuality === "high"}
+                          onChange={(e) => {
+                            handleChange("itemQuality", e.target.value);
+                            handleChange("itemType", "high quality inventory");
+                          }}
+                          className="form-radio"
+                        />
+                        <span className="ml-2 text-sm text-gray-300">
+                          High quality
+                        </span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="itemQuality"
+                          value="max"
+                          checked={localForm.itemQuality === "max"}
+                          onChange={(e) => {
+                            handleChange("itemQuality", e.target.value);
+                            handleChange("itemType", "max quality inventory");
+                          }}
+                          className="form-radio"
+                        />
+                        <span className="ml-2 text-sm text-gray-300">
+                          Max quality
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              ) : localForm.itemCategory === "Resources" ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Resource Type
+                    </label>
+                    <div
+                      className="grid grid-cols-3 md:grid-cols-4 grid-flow-col auto-rows-max gap-2"
+                      style={{
+                        gridTemplateRows: `repeat(${Math.ceil(
+                          resourceTypes.length / 4
+                        )}, minmax(0, auto))`,
+                      }}
+                    >
+                      {resourceTypes.map((type) => (
+                        <label
+                          key={type}
+                          className="flex items-center cursor-pointer"
+                        >
+                          <input
+                            type="radio"
+                            name="resourceType"
+                            value={type}
+                            checked={localForm.resourceType === type}
+                            onChange={(e) => {
+                              const updatedForm = {
+                                ...localForm,
+                                resourceType: e.target.value,
+                                itemType: type.toLowerCase(),
+                              };
+                              setLocalForm(updatedForm);
+                              onChange(updatedForm);
+                            }}
+                            className="form-radio"
+                          />
+                          <span className="ml-2 text-sm text-gray-300">
+                            {type}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Quantity (Optional)
+                    </label>
+                    <input
+                      type="number"
+                      value={localForm.resourceQuantity}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (
+                          value === "" ||
+                          (!isNaN(parseInt(value)) && parseInt(value) > 0)
+                        ) {
+                          handleChange("resourceQuantity", value);
+                        }
+                      }}
+                      className="form-input w-full"
+                      placeholder="Leave empty for single unit"
+                      min="1"
+                    />
+                  </div>
+                </div>
+              ) : localForm.itemCategory === "Containers" ? (
+                <div>
+                  <p className="text-xs text-gray-400 mb-3">
+                    Select the type of container you're{" "}
+                    {localForm.purpose.toLowerCase()}
+                  </p>
+                  <div
+                    className="grid grid-cols-3 md:grid-cols-4 grid-flow-col auto-rows-max gap-2"
+                    style={{
+                      gridTemplateRows: `repeat(${Math.ceil(
+                        containerTypes.length / 4
+                      )}, minmax(0, auto))`,
+                    }}
+                  >
+                    {containerTypes.map((type) => (
+                      <label
+                        key={type}
+                        className="flex items-center cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name="containerType"
+                          value={type}
+                          checked={localForm.containerType === type}
+                          onChange={(e) => {
+                            const updatedForm = {
+                              ...localForm,
+                              containerType: e.target.value,
+                              itemType: type.toLowerCase(),
+                            };
+                            setLocalForm(updatedForm);
+                            onChange(updatedForm);
+                          }}
+                          className="form-radio"
+                        />
+                        <span className="ml-2 text-sm text-gray-300">
+                          {type}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  {(() => {
+                    const itemTypes = getItemTypesForCategory(
+                      localForm.itemCategory
+                    );
+                    const numColumns = 4;
+                    return (
+                      <div className="grid grid-cols-4 gap-2">
+                        {itemTypes.map((item) => (
+                          <label
+                            key={item}
+                            className="flex items-center cursor-pointer"
+                          >
+                            <input
+                              type="radio"
+                              name="itemType"
+                              value={item}
+                              checked={localForm.itemType === item}
+                              onChange={(e) =>
+                                handleChange("itemType", e.target.value)
+                              }
+                              className="form-radio"
+                            />
+                            <span className="ml-2 text-sm text-gray-300">
+                              {item}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                  {getItemTypesForCategory(localForm.itemCategory).length ===
+                    0 && (
+                    <p className="text-xs text-gray-400 mt-2">
+                      No items available for this category.
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Luminous Wheels Type Input */}
+          {localForm.itemCategory === "Luminous wheels" && (
+            <div className="feature-card">
+              <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
+                <MdEdit className="text-cyan-400 mr-2 text-lg" />
+                Type Number (Optional)
+              </h6>
+              <input
+                type="number"
+                value={localForm.luminousWheelsType}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (
+                    value === "" ||
+                    (!isNaN(parseInt(value)) && parseInt(value) > 0)
+                  ) {
+                    handleChange("luminousWheelsType", value);
+                  }
+                }}
+                className="form-input w-full"
+                placeholder="Enter type number (e.g., 3)"
+                min="1"
+              />
+              <p className="text-xs text-gray-400 mt-2">
+                Leave empty to use just "luminous wheels" without type number
+              </p>
+            </div>
+          )}
+
+          {/* Quantity Input */}
           <div className="feature-card">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
-              <MdEdit className="text-cyan-400 mr-2 text-lg" />
-              Item Details
+              <MdInventory className="text-cyan-400 mr-2 text-lg" />
+              Quantity (Optional)
             </h6>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Specific Item Type
-                </label>
-                <select
-                  value={localForm.itemType}
-                  onChange={(e) => handleChange("itemType", e.target.value)}
-                  className="form-input"
-                >
-                  <option value="">Select specific item type (optional)</option>
-                  <option value="automatic drill">Automatic drill</option>
-                  <option value="automatic sawmill">Automatic sawmill</option>
-                  <option value="automatic rod">Automatic rod</option>
-                  <option value="automatic oil well">Automatic oil well</option>
-                  <option value="automatic watering can">
-                    Automatic watering can
-                  </option>
-                  <option value="high quality inventory">
-                    High quality inventory
-                  </option>
-                  <option value="medium quality inventory">
-                    Medium quality inventory
-                  </option>
-                  <option value="low quality inventory">
-                    Low quality inventory
-                  </option>
-                  <option value="max quality inventory">
-                    Max quality inventory
-                  </option>
-                  <option value="backpack skin">Backpack skin</option>
-                  <option value="battery">Battery</option>
-                  <option value="premium fuel canister">
-                    Premium fuel canister
-                  </option>
-                  <option value="fuel canister">Fuel canister</option>
-                  <option value="charger">Charger</option>
-                  <option value="Christmas key">Christmas key</option>
-                  <option value="Christmas copper">Christmas copper</option>
-                  <option value="Christmas timber">Christmas timber</option>
-                  <option value="Christmas perch">Christmas perch</option>
-                  <option value="Christmas seed">Christmas seed</option>
-                  <option value="Christmas lollipop">Christmas lollipop</option>
-                  <option value="New years gift">New years gift</option>
-                  <option value="A Little gift">A Little gift</option>
-                  <option value="A Big gift">A Big gift</option>
-                  <option value="Drawing">Drawing</option>
-                  <option value="Dirty Statue">Dirty Statue</option>
-                  <option value="Purified Statue">Purified Statue</option>
-                  <option value="dice">Dice</option>
-                  <option value="perch">Perch</option>
-                  <option value="carp">Carp</option>
-                  <option value="salmon">Salmon</option>
-                  <option value="trout">Trout</option>
-                  <option value="fishing rod">Fishing rod</option>
-                  <option value="mandarin">Mandarin</option>
-                  <option value="pumpkin">Pumpkin</option>
-                  <option value="strawberry">Strawberry</option>
-                  <option value="pineapple">Pineapple</option>
-                  <option value="cabbage">Cabbage</option>
-                  <option value="firework">Firework</option>
-                  <option value="fuel for resource extraction">
-                    Fuel for resource extraction
-                  </option>
-                  <option value="Grand ticket">Grand ticket</option>
-                  <option value="hookah">Hookah</option>
-                  <option value="attack juice">Attack juice</option>
-                  <option value="protection juice">Protection juice</option>
-                  <option value="endurance juice">Endurance juice</option>
-                  <option value="riding juice">Riding juice</option>
-                  <option value="power juice">Power juice</option>
-                  <option value="immunity juice">Immunity juice</option>
-                  <option value="juice on becoming an animal">
-                    Juice on becoming an animal
-                  </option>
-                  <option value="juice for double the payment">
-                    Juice for double the payment
-                  </option>
-                  <option value="fast running juice">Fast running juice</option>
-                  <option value="Leash">Leash</option>
-                  <option value="letter G">Letter G</option>
-                  <option value="letter R">Letter R</option>
-                  <option value="letter A">Letter A</option>
-                  <option value="letter N">Letter N</option>
-                  <option value="letter D">Letter D</option>
-                  <option value="license plate">License plate</option>
-                  <option value="regular lottery ticket">
-                    Regular lottery ticket
-                  </option>
-                  <option value="rare lottery ticket">
-                    Rare lottery ticket
-                  </option>
-                  <option value="flame and water lottery ticket">
-                    Flame and water lottery ticket
-                  </option>
-                  <option value="Cayo Perico ticket">Cayo Perico ticket</option>
-                  <option value="Car ticket">Car ticket</option>
-                  <option value="Secret ticket fragment">
-                    Secret ticket fragment
-                  </option>
-                  <option value="Secret ticket">Secret ticket</option>
-                  <option value="luminous wheels">Luminous wheels</option>
-                  <option value="mask">Mask</option>
-                  <option value="milk">Milk</option>
-                  <option value="copper">Copper</option>
-                  <option value="emerald">Emerald</option>
-                  <option value="ruby">Ruby</option>
-                  <option value="diamond">Diamond</option>
-                  <option value="mushroom">Mushroom</option>
-                  <option value="paint can">Paint can</option>
-                  <option value="pearl">Pearl</option>
-                  <option value="pet food">Pet food</option>
-                  <option value="pickaxe">Pickaxe</option>
-                  <option value="Prime">Prime</option>
-                  <option value="Prime Platinum">Prime Platinum</option>
-                  <option value="repair kit">Repair kit</option>
-                  <option value="solar barrel">Solar barrel</option>
-                  <option value="gasoline barrel">Gasoline barrel</option>
-                  <option value="kerosene barrel">Kerosene barrel</option>
-                  <option value="Resource Miners ticket">
-                    Resource Miners ticket
-                  </option>
-                  <option value="pineapple seed">Pineapple seed</option>
-                  <option value="cabbage seed">Cabbage seed</option>
-                  <option value="pumpkin seed">Pumpkin seed</option>
-                  <option value="mandarin seed">Mandarin seed</option>
-                  <option value="mushroom seed">Mushroom seed</option>
-                  <option value="snow">Snow</option>
-                  <option value="solar panel">Solar panel</option>
-                  <option value="SIM card">SIM card</option>
-                  <option value="scrap metal">Scrap metal</option>
-                  <option value="top quality metal">Top quality metal</option>
-                  <option value="thread">Thread</option>
-                  <option value="timber">Timber</option>
-                  <option value="token">Token</option>
-                  <option value="tonic treat">Tonic treat</option>
-                  <option value="video card">Video card</option>
-                  <option value="wire">Wire</option>
-                  <option value="tuning parts">Tuning parts</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Quantity (Optional)
-                </label>
-                <input
-                  type="number"
-                  value={localForm.itemQuantity}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value === "" || (!isNaN(parseInt(value)) && parseInt(value) > 0)) {
-                      handleChange("itemQuantity", value);
-                    }
-                  }}
-                  className="form-input"
-                  placeholder="Leave empty for single item"
-                  min="1"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Quality (Optional)
-                </label>
-                <select
-                  value={localForm.itemQuality}
-                  onChange={(e) => handleChange("itemQuality", e.target.value)}
-                  className="form-input"
-                >
-                  <option value="">No specific quality</option>
-                  <option value="low">Low quality</option>
-                  <option value="medium">Medium quality</option>
-                  <option value="high">High quality</option>
-                  <option value="max">Max quality</option>
-                </select>
-              </div>
-            </div>
+            <input
+              type="number"
+              value={localForm.itemQuantity}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (
+                  value === "" ||
+                  (!isNaN(parseInt(value)) && parseInt(value) > 0)
+                ) {
+                  handleChange("itemQuantity", value);
+                }
+              }}
+              className="form-input w-full"
+              placeholder="Leave empty for single item"
+              min="1"
+            />
+            <p className="text-xs text-gray-400 mt-2">
+              Specify quantity or leave empty for a single item
+            </p>
           </div>
         </div>
       )}
@@ -900,165 +857,128 @@ export default function OtherForm({
       )}
 
       {/* Resources Details */}
-      {localForm.category === "resources" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="feature-card">
-            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
-              <MdNature className="text-cyan-400 mr-2 text-lg" />
-              Resource Type
-            </h6>
-            <p className="text-xs text-gray-400 mb-3">
-              Select the type of resource
-            </p>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
-              {resourceTypes.map((type) => (
-                <label key={type} className="flex items-center">
-                  <input
-                    type="radio"
-                    name="resourceType"
-                    value={type}
-                    checked={localForm.resourceType === type}
-                    onChange={(e) =>
-                      handleChange("resourceType", e.target.value)
-                    }
-                    className="form-radio"
-                  />
-                  <span className="ml-2 text-sm text-gray-300">{type}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="feature-card">
-            <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
-              <MdEdit className="text-cyan-400 mr-2 text-lg" />
-              Resource Details
-            </h6>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Quantity (Optional)
-              </label>
-              <input
-                type="number"
-                value={localForm.resourceQuantity}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "" || (!isNaN(parseInt(value)) && parseInt(value) > 0)) {
-                    handleChange("resourceQuantity", value);
-                  }
-                }}
-                className="form-input"
-                placeholder="Leave empty for single unit"
-                min="1"
-              />
-              <p className="text-xs text-gray-400 mt-2">
-                Specify quantity or leave empty for a single unit
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Containers Details */}
-      {localForm.category === "containers" && (
-        <div className="feature-card">
-          <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
-            <MdCardGiftcard className="text-cyan-400 mr-2 text-lg" />
-            Container Type
-          </h6>
-          <p className="text-xs text-gray-400 mb-3">
-            Select the type of container you're {localForm.purpose.toLowerCase()}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
-            {containerTypes.map((type) => (
-              <label key={type} className="flex items-center">
-                <input
-                  type="radio"
-                  name="containerType"
-                  value={type}
-                  checked={localForm.containerType === type}
-                  onChange={(e) =>
-                    handleChange("containerType", e.target.value)
-                  }
-                  className="form-radio"
-                />
-                <span className="ml-2 text-sm text-gray-300">{type}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Clothing Details */}
       {localForm.category === "clothing" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="feature-card">
+          <div className="feature-card relative">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
-              <MdCheckroom className="text-cyan-400 mr-2 text-lg" />
-              Clothing Category
+              <MdEdit className="text-cyan-400 mr-2 text-lg" />
+              Specific Item
             </h6>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
-              {clothingTypes.map((type) => (
-                <label key={type} className="flex items-center">
-                  <input
-                    type="radio"
-                    name="clothingType"
-                    value={type}
-                    checked={localForm.clothingType === type}
-                    onChange={(e) => {
-                      handleChange("clothingType", e.target.value);
-                      // Clear clothingItem when category changes
-                      handleChange("clothingItem", "");
-                    }}
-                    className="form-radio"
-                  />
-                  <span className="ml-2 text-sm text-gray-300">{type}</span>
-                </label>
-              ))}
+            <div className="space-y-3">
+              {/* Gender Selection Buttons */}
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleGenderChange("")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    localForm.clothingGender === ""
+                      ? "bg-cyan-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleGenderChange("male")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    localForm.clothingGender === "male"
+                      ? "bg-cyan-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  Male
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleGenderChange("female")}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    localForm.clothingGender === "female"
+                      ? "bg-cyan-600 text-white"
+                      : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  }`}
+                >
+                  Female
+                </button>
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={localForm.clothingItem}
+                  onChange={(e) => handleClothingItemChange(e.target.value)}
+                  className="form-input w-full"
+                  placeholder="Search for clothing item or type custom..."
+                  onFocus={() => {
+                    if (localForm.clothingItem.length > 0) {
+                      setShowClothingSuggestions(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    setTimeout(() => setShowClothingSuggestions(false), 200);
+                  }}
+                />
+                {showClothingSuggestions &&
+                  filteredClothingItems.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      {filteredClothingItems.map((item, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => selectClothingItem(item)}
+                          className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm text-gray-300"
+                        >
+                          {item}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+              </div>
+              {clothingWarning && (
+                <div className="bg-yellow-900/30 border border-yellow-600/50 rounded-lg p-3">
+                  <p className="text-sm text-yellow-400">{clothingWarning}</p>
+                </div>
+              )}
+              <p className="text-xs text-gray-400">
+                Select gender to filter search, then type to search from items
+                or enter a custom item name. Leave empty to use only the
+                category above.
+              </p>
             </div>
-            <p className="text-xs text-gray-400 mt-3">
-              Select a clothing category or specify a custom item below
-            </p>
           </div>
 
           <div className="feature-card">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
-              <MdEdit className="text-cyan-400 mr-2 text-lg" />
-              Specific Item (Optional)
+              <MdAttachMoney className="text-cyan-400 mr-2 text-lg" />
+              {localForm.purpose === "Selling" ? "Price:" : "Budget:"}
             </h6>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Quick select or enter custom
-                </label>
-                <select
-                  value=""
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      handleChange("clothingItem", e.target.value);
-                    }
-                  }}
-                  className="form-input mb-2"
-                >
-                  <option value="">-- Quick select common items --</option>
-                  {clothingItems.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  value={localForm.clothingItem}
-                  onChange={(e) => handleChange("clothingItem", e.target.value)}
-                  className="form-input"
-                  placeholder="e.g., Red leather jacket, Designer shoes, or leave empty"
-                />
-              </div>
-              <p className="text-xs text-gray-400">
-                Specify a specific item name, or leave empty to use only the category above
-              </p>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={localForm.price}
+                onChange={(e) => handleChange("price", e.target.value)}
+                className="form-input flex-1"
+                placeholder="Amount"
+              />
+              <button
+                onClick={() => handleChange("price", "")}
+                className="btn-secondary text-xs px-2 py-1"
+              >
+                Clear
+              </button>
             </div>
+            <label className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                checked={localForm.priceMillion}
+                onChange={(e) =>
+                  handleCheckboxChange("priceMillion", e.target.checked)
+                }
+                className="form-checkbox"
+              />
+              <span className="ml-2 text-sm text-gray-300">Million.</span>
+            </label>
           </div>
         </div>
       )}
@@ -1188,11 +1108,7 @@ export default function OtherForm({
       )}
 
       {/* Price and Location */}
-      {(localForm.category === "items" ||
-        localForm.category === "pets" ||
-        localForm.category === "resources" ||
-        localForm.category === "containers" ||
-        localForm.category === "clothing") && (
+      {(localForm.category === "items" || localForm.category === "pets") && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="feature-card">
             <h6 className="text-sm font-semibold text-white mb-4 flex items-center">
@@ -1239,51 +1155,15 @@ export default function OtherForm({
                 className="form-input"
               >
                 <option value="">Select location (optional)</option>
-                {/* Official Places - Uppercase */}
-                <option value="Vinewood Hills">Vinewood Hills</option>
-                <option value="Rockford Hills">Rockford Hills</option>
-                <option value="Richman">Richman</option>
-                <option value="Sandy Shores">Sandy Shores</option>
-                <option value="Paleto Bay">Paleto Bay</option>
-                <option value="Postal">Postal</option>
-                <option value="Hospital">Hospital</option>
-                <option value="Capitol">Capitol</option>
-                <option value="Fire Station">Fire Station</option>
-                <option value="Auto Fair">Auto Fair</option>
-                <option value="Bahama Mamas Bar">Bahama Mamas Bar</option>
-                <option value="Tequi-la-la Bar">Tequi-la-la Bar</option>
-                <option value="FIB">FIB</option>
-                <option value="Hotel Spa Bar">Hotel Spa Bar</option>
-                <option value="Pacific Bluffs Country Club">
-                  Pacific Bluffs Country Club
-                </option>
-                <option value="Diamond Resort Bar (Casino Restaurant)">
-                  Diamond Resort Bar (Casino Restaurant)
-                </option>
-                <option value="Vanilla Unicorn Bar">Vanilla Unicorn Bar</option>
-                <option value="Church">Church</option>
-                <option value="Stock Exchange">Stock Exchange</option>
-                <option value="Stadium">Stadium</option>
-                <option value="Chumash">Chumash</option>
-                <option value="Lifeinvader">Lifeinvader</option>
-                <option value="Del Perro Pier">Del Perro Pier</option>
-                <option value="Del Perro Beach">Del Perro Beach</option>
-                <option value="Cayo Perico Island">Cayo Perico Island</option>
-                <option value="Hotel">Hotel</option>
-                <option value="Raton Canyon">Raton Canyon</option>
-                <option value="School">School</option>
-                <option value="SAHP">SAHP</option>
-                {/* Unofficial places - Lowercase */}
-                <option value="airport">airport</option>
-                <option value="autosalon">autosalon</option>
-                <option value="beach">beach</option>
-                <option value="beach market">beach market</option>
-                <option value="ghetto">ghetto</option>
-                <option value="post office">post office</option>
-                <option value="train station">train station</option>
-                <option value="yacht">yacht</option>
-                <option value="the city">the city</option>
-                <option value="Custom location">Custom location</option>
+                {[...location1, ...location2, "Custom location"]
+                  .sort((a, b) =>
+                    a.localeCompare(b, undefined, { sensitivity: "base" })
+                  )
+                  .map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
               </select>
               {localForm.location === "Custom location" && (
                 <input

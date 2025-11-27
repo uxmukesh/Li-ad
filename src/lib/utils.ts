@@ -185,22 +185,56 @@ export function validateAdContent(content: string): {
     };
   }
 
-  // Check for price/budget format (exclude dating ads)
+  // Check for price/budget format (exclude dating ads and work ads)
   const isDatingAd = lowerContent.startsWith("looking for");
+  const isWorkAd =
+    lowerContent.startsWith("hiring") ||
+    (lowerContent.startsWith("looking for") &&
+      (lowerContent.includes("workers") ||
+        lowerContent.includes("job") ||
+        lowerContent.includes("work")));
   const hasPriceOrBudget =
     lowerContent.includes("price:") ||
     lowerContent.includes("budget:") ||
-    lowerContent.includes("rent:");
+    lowerContent.includes("rent:") ||
+    lowerContent.includes("salary:");
   if (
     !hasPriceOrBudget &&
     !lowerContent.includes("negotiable") &&
-    !isDatingAd
+    !isDatingAd &&
+    !isWorkAd
   ) {
     return {
       isValid: false,
       reason:
-        'Ad must include either "Price:", "Budget:", "Rent:", or "Negotiable".',
+        'Ad must include either "Price:", "Budget:", "Rent:", "Salary:", or "Negotiable".',
     };
+  }
+
+  // Check for proper salary amount format in work ads
+  if (isWorkAd && lowerContent.includes("salary:")) {
+    const salaryMatch = content.match(/salary:\s*([^.]*)/i);
+    if (salaryMatch && salaryMatch[1]) {
+      const salaryValue = salaryMatch[1].trim();
+      // If it's not "Negotiable", it should start with $
+      if (
+        salaryValue.toLowerCase() !== "negotiable" &&
+        !salaryValue.startsWith("$")
+      ) {
+        return {
+          isValid: false,
+          reason: 'Salary amount must start with "$" symbol (e.g., "$15.000").',
+        };
+      }
+      // Check for proper thousands separator format (dots, not commas)
+      if (salaryValue.startsWith("$") && salaryValue.includes(",")) {
+        return {
+          isValid: false,
+          reason:
+            'Salary amount must use dots (.) as thousands separators, not commas (e.g., "$15.000" not "$15,000").',
+        };
+      }
+    }
   }
 
   // Real Estate specific validations
@@ -267,7 +301,7 @@ export function formatCurrency(amount: string): string {
   // This handles cases where price might have $, commas, spaces, etc.
   const cleanedAmount = amount.toString().replace(/[^\d.]/g, "");
   const numAmount = parseFloat(cleanedAmount);
-  
+
   if (isNaN(numAmount)) return cleanedAmount || amount;
 
   // Format with dots as thousands separators (Lifeinvader policy)
@@ -276,9 +310,9 @@ export function formatCurrency(amount: string): string {
   const formatted = numAmount.toLocaleString("en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 20,
-    useGrouping: true
+    useGrouping: true,
   });
-  
+
   return formatted.replace(/,/g, ".");
 }
 
@@ -442,7 +476,11 @@ export function generateRealEstateTemplate(form: RealEstateForm): string {
       (purpose === "Renting" || purpose === "Renting Out") && rentalPeriod
         ? ` ${rentalPeriod}`
         : "";
-    priceString = ` $${formattedPrice}${millionText}${rentalPeriodText}`;
+    // Add period if ends with "Million" or rental period, but not if ends with a number
+    const needsPeriod = priceMillion || rentalPeriodText !== "";
+    priceString = ` $${formattedPrice}${millionText}${rentalPeriodText}${
+      needsPeriod ? "." : ""
+    }`;
   } else {
     priceString = " Negotiable.";
   }
@@ -559,7 +597,8 @@ export function generateAutoTemplate(form: AutoForm): string {
   if (price) {
     const formattedPrice = formatCurrency(price);
     const millionText = priceMillion ? " Million" : "";
-    priceString = ` $${formattedPrice}${millionText}`;
+    // Add period if ends with "Million", but not if ends with a number
+    priceString = ` $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
   } else {
     priceString = " Negotiable.";
   }
@@ -692,15 +731,17 @@ export function generateWorkTemplate(form: WorkForm): string {
   // Add salary/compensation
   if (type === "hiring") {
     if (salary === "negotiable") {
-      adText += ". Salary: Negotiable";
+      adText += ". Salary: Negotiable.";
     } else if (salary === "bonus" && bonusAmount) {
       adText += `. Awarding ${bonusAmount} bonus`;
     } else if (salary === "specific" && salaryAmount) {
-      adText += `. Salary: ${salaryAmount}`;
+      // Format the salary amount with $ and thousands separators for output
+      const formattedSalary = formatCurrency(salaryAmount);
+      adText += `. Salary: $${formattedSalary}`;
     } else if (salary === "bonus") {
       adText += ". Awarding bonuses";
     } else {
-      adText += ". Salary: Negotiable";
+      adText += ". Salary: Negotiable.";
     }
   } else {
     // For "looking for work" ads, add appropriate ending
@@ -766,9 +807,10 @@ export function generateBusinessTemplate(form: BusinessForm): string {
       } else {
         const formattedPrice = formatCurrency(price);
         const millionText = priceMillion ? " Million" : "";
+        // Add period if ends with "Million"
         adText += `. ${
           purpose === "Buying" ? "Budget" : "Price"
-        }: $${formattedPrice}${millionText}`;
+        }: $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
       }
     } else {
       adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable.`;
@@ -795,9 +837,10 @@ export function generateBusinessTemplate(form: BusinessForm): string {
       } else {
         const formattedPrice = formatCurrency(price);
         const millionText = priceMillion ? " Million" : "";
+        // Add period if ends with "Million"
         adText += `. ${
           purpose === "Buying" ? "Budget" : "Price"
-        }: $${formattedPrice}${millionText}`;
+        }: $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
       }
     } else {
       adText += `. ${purpose === "Buying" ? "Budget" : "Price"}: Negotiable.`;
@@ -808,7 +851,11 @@ export function generateBusinessTemplate(form: BusinessForm): string {
   }
 
   // Don't add period if adText already ends with one, ends with a digit (price value), or ends with "Million"
-  if (adText.endsWith(".") || /\d$/.test(adText) || adText.endsWith("Million")) {
+  if (
+    adText.endsWith(".") ||
+    /\d$/.test(adText) ||
+    adText.endsWith("Million")
+  ) {
     return adText;
   }
   return adText + ".";
@@ -827,6 +874,7 @@ export function generateOtherTemplate(form: OtherForm): string {
     itemType,
     itemQuantity,
     itemQuality,
+    luminousWheelsType,
     petType,
     petName,
     resourceType,
@@ -834,6 +882,7 @@ export function generateOtherTemplate(form: OtherForm): string {
     containerType,
     clothingType,
     clothingItem,
+    clothingGender,
     gamblingType,
     betAmount,
     allianceType,
@@ -889,34 +938,151 @@ export function generateOtherTemplate(form: OtherForm): string {
       adText = "Looking for services";
     }
   } else if (category === "items") {
-    // Item ads
-    adText = purpose;
+    // Item ads - handle Resources and Containers specially
+    if (itemCategory === "Resources") {
+      // Resource ads
+      adText = purpose;
 
-    if (itemType) {
-      adText += ` ${itemType}`;
-    } else if (itemCategory) {
-      adText += ` ${itemCategory.toLowerCase()}`;
-    }
+      if (resourceType) {
+        adText += ` ${resourceType.toLowerCase()}`;
+      } else if (itemType) {
+        adText += ` ${itemType}`;
+      }
 
-    if (itemQuantity && itemQuantity !== "1") {
-      adText += ` ${itemQuantity}`;
-    }
+      if (resourceQuantity && resourceQuantity !== "1") {
+        adText += ` ${resourceQuantity}`;
+      } else if (itemQuantity && itemQuantity !== "1") {
+        adText += ` ${itemQuantity}`;
+      }
 
-    if (itemQuality && itemQuality !== "") {
-      adText += ` ${itemQuality} quality`;
-    }
+      if (location) {
+        adText += ` ${location}`;
+      }
 
-    if (location) {
-      adText += ` ${location}`;
-    }
+      // Add price/budget
+      if (price) {
+        const formattedPrice = formatCurrency(price);
+        const millionText = priceMillion ? " Million" : "";
+        // Add period if ends with "Million"
+        adText += `. ${
+          purpose === "Selling" ? "Price" : "Budget"
+        }: $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
+      } else {
+        adText += `. ${
+          purpose === "Selling" ? "Price" : "Budget"
+        }: Negotiable.`;
+      }
+    } else if (itemCategory === "Containers") {
+      // Container ads
+      adText = purpose;
 
-    // Add price/budget
-    if (price) {
-      const formattedPrice = formatCurrency(price);
-      const millionText = priceMillion ? " Million" : "";
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: $${formattedPrice}${millionText}`;
+      if (containerType) {
+        adText += ` ${containerType}`;
+      } else if (itemType) {
+        adText += ` ${itemType}`;
+      }
+
+      if (location) {
+        adText += ` ${location}`;
+      }
+
+      // Add price/budget
+      if (price) {
+        const formattedPrice = formatCurrency(price);
+        const millionText = priceMillion ? " Million" : "";
+        // Add period if ends with "Million"
+        adText += `. ${
+          purpose === "Selling" ? "Price" : "Budget"
+        }: $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
+      } else {
+        adText += `. ${
+          purpose === "Selling" ? "Price" : "Budget"
+        }: Negotiable.`;
+      }
     } else {
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: Negotiable.`;
+      // Regular item ads
+      adText = purpose;
+
+      // Special handling for Tickets category
+      const isTicketsCategory =
+        itemCategory === "Tickets" ||
+        itemCategory === "Grand tickets" ||
+        (itemType && itemType.toLowerCase().includes("ticket"));
+      const quantity = itemQuantity ? parseInt(itemQuantity) : 1;
+      const isPlural = quantity > 1;
+
+      // Add quantity/article first for tickets
+      if (isTicketsCategory) {
+        if (isPlural) {
+          adText += ` ${quantity}`;
+        } else {
+          adText += ` a`;
+        }
+      } else if (itemQuantity && itemQuantity !== "1") {
+        // Add quantity first for non-ticket items
+        adText += ` ${itemQuantity}`;
+      }
+
+      // Then add item type or category
+      if (itemType) {
+        // For tickets, pluralize if needed
+        if (isTicketsCategory && isPlural) {
+          const pluralizedType = itemType.replace(/ticket$/, "tickets");
+          adText += ` ${pluralizedType}`;
+        } else {
+          adText += ` ${itemType}`;
+        }
+        // Add type number for luminous wheels if provided
+        if (
+          itemCategory === "Luminous wheels" &&
+          luminousWheelsType &&
+          luminousWheelsType !== ""
+        ) {
+          adText += ` of type ${luminousWheelsType}`;
+        }
+      } else if (itemCategory) {
+        if (isTicketsCategory && isPlural) {
+          adText += ` ${itemCategory.toLowerCase()}`;
+        } else if (isTicketsCategory) {
+          // Singular: convert "tickets" to "ticket" if needed
+          const singularCategory = itemCategory
+            .toLowerCase()
+            .replace(/tickets$/, "ticket");
+          adText += ` ${singularCategory}`;
+        } else {
+          adText += ` ${itemCategory.toLowerCase()}`;
+          // Add type number for luminous wheels if provided
+          if (
+            itemCategory === "Luminous wheels" &&
+            luminousWheelsType &&
+            luminousWheelsType !== ""
+          ) {
+            adText += ` of type ${luminousWheelsType}`;
+          }
+        }
+      }
+
+      if (itemQuality && itemQuality !== "") {
+        adText += ` ${itemQuality} quality`;
+      }
+
+      if (location) {
+        adText += ` ${location}`;
+      }
+
+      // Add price/budget
+      if (price) {
+        const formattedPrice = formatCurrency(price);
+        const millionText = priceMillion ? " Million" : "";
+        // Add period if ends with "Million"
+        adText += `. ${
+          purpose === "Selling" ? "Price" : "Budget"
+        }: $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
+      } else {
+        adText += `. ${
+          purpose === "Selling" ? "Price" : "Budget"
+        }: Negotiable.`;
+      }
     }
   } else if (category === "pets") {
     // Pet ads
@@ -938,51 +1104,10 @@ export function generateOtherTemplate(form: OtherForm): string {
     if (price) {
       const formattedPrice = formatCurrency(price);
       const millionText = priceMillion ? " Million" : "";
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: $${formattedPrice}${millionText}`;
-    } else {
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: Negotiable.`;
-    }
-  } else if (category === "resources") {
-    // Resource ads
-    adText = purpose;
-
-    if (resourceType) {
-      adText += ` ${resourceType.toLowerCase()}`;
-    }
-
-    if (resourceQuantity && resourceQuantity !== "1") {
-      adText += ` ${resourceQuantity}`;
-    }
-
-    if (location) {
-      adText += ` ${location}`;
-    }
-
-    // Add price/budget
-    if (price) {
-      const formattedPrice = formatCurrency(price);
-      const millionText = priceMillion ? " Million" : "";
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: $${formattedPrice}${millionText}`;
-    } else {
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: Negotiable.`;
-    }
-  } else if (category === "containers") {
-    // Container ads
-    adText = purpose;
-
-    if (containerType) {
-      adText += ` ${containerType}`;
-    }
-
-    if (location) {
-      adText += ` ${location}`;
-    }
-
-    // Add price/budget
-    if (price) {
-      const formattedPrice = formatCurrency(price);
-      const millionText = priceMillion ? " Million" : "";
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: $${formattedPrice}${millionText}`;
+      // Add period if ends with "Million"
+      adText += `. ${
+        purpose === "Selling" ? "Price" : "Budget"
+      }: $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
     } else {
       adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: Negotiable.`;
     }
@@ -992,8 +1117,20 @@ export function generateOtherTemplate(form: OtherForm): string {
 
     if (clothingItem) {
       adText += ` ${clothingItem}`;
+      // Add gender suffix if specified
+      if (clothingGender === "male") {
+        adText += " for men";
+      } else if (clothingGender === "female") {
+        adText += " for women";
+      }
     } else if (clothingType) {
       adText += ` ${clothingType.toLowerCase()}`;
+      // Add gender suffix if specified
+      if (clothingGender === "male") {
+        adText += " for men";
+      } else if (clothingGender === "female") {
+        adText += " for women";
+      }
     }
 
     if (location) {
@@ -1004,7 +1141,10 @@ export function generateOtherTemplate(form: OtherForm): string {
     if (price) {
       const formattedPrice = formatCurrency(price);
       const millionText = priceMillion ? " Million" : "";
-      adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: $${formattedPrice}${millionText}`;
+      // Add period if ends with "Million"
+      adText += `. ${
+        purpose === "Selling" ? "Price" : "Budget"
+      }: $${formattedPrice}${millionText}${priceMillion ? "." : ""}`;
     } else {
       adText += `. ${purpose === "Selling" ? "Price" : "Budget"}: Negotiable.`;
     }
@@ -1015,14 +1155,14 @@ export function generateOtherTemplate(form: OtherForm): string {
       if (betAmount) {
         adText += `. Bet: ${betAmount}`;
       } else {
-        adText += `. Bet: Negotiable`;
+        adText += `. Bet: Negotiable.`;
       }
     } else if (gamblingType === "Poker") {
       adText = "Looking to play poker";
       if (betAmount) {
         adText += `. Bet: ${betAmount}`;
       } else {
-        adText += `. Bet: Negotiable`;
+        adText += `. Bet: Negotiable.`;
       }
     } else if (gamblingType === "Lottery") {
       adText = "Looking for lottery tickets";
@@ -1039,7 +1179,11 @@ export function generateOtherTemplate(form: OtherForm): string {
   }
 
   // Don't add period if adText already ends with one, ends with a digit (price value), or ends with "Million"
-  if (adText.endsWith(".") || /\d$/.test(adText) || adText.endsWith("Million")) {
+  if (
+    adText.endsWith(".") ||
+    /\d$/.test(adText) ||
+    adText.endsWith("Million")
+  ) {
     return adText;
   }
   return adText + ".";

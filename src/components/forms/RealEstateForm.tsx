@@ -701,7 +701,16 @@ export default function RealEstateForm({
                   <h6 className="text-sm font-medium text-gray-300 mb-2">
                     Locations
                   </h6>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div
+                    className="grid gap-2"
+                    style={{
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      gridAutoFlow: "column",
+                      gridTemplateRows: `repeat(${Math.ceil(
+                        (location1.length + location2.length) / 3
+                      )}, minmax(0, auto))`,
+                    }}
+                  >
                     {[...location1, ...location2].map((location, index) => {
                       // Handle special case for "near the beach market"
                       if (location === "near the beach market") {
@@ -772,7 +781,16 @@ export default function RealEstateForm({
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-4 gap-2">
+              <div
+                className="grid gap-2"
+                style={{
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  gridAutoFlow: "column",
+                  gridTemplateRows: `repeat(${Math.ceil(
+                    (location1.length + location2.length) / 4
+                  )}, minmax(0, auto))`,
+                }}
+              >
                 {[...location1, ...location2].map((location, index) => (
                   <label key={index} className="flex items-center">
                     <input

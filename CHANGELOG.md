@@ -1,127 +1,77 @@
-# Change Log
+# Changelog
 
-## [3.0.4] 2022-06-23
-### BugFixing
-- fix inputs on RTL
-- update <html> tag border
+All notable changes to the Lifeinvader Ads Generator project will be documented in this file.
 
-## [3.0.3] 2022-06-09
-### Update and Improvements
-- update Bootstrap to v5.2.0-beta1
-- fix code preview for input-outine
+## [1.0.0] - 2025-11-28
 
-## [3.0.2] 2022-03-25
-### Updates
-- update SCSS folder
+### Added
 
-## [3.0.1] 2022-03-07
-### Update and Improvements
-- fix running 'npm install' issue
-- fix SCSS compiling issues
+- **Form Enhancements**
 
-## [3.0.0] 2021-10-07
-### Refactor and Improvements
-- Update Bootstrap to v5.1.1
-- Update to Material Design 2
-- New Documentation version
-- New Product structure
+  - Editable output field
+  - Enhanced OtherForm with improved category organization
+  - Clothing search with gender filtering (Male/Female/All)
+  - Gender validation for clothing items
+  - Item category refactoring with grid layout
+  - Quality selection as radio buttons for Inventory category
+  - Auto-selection of item type for single-item categories
+  - Optional type number input for Luminous wheels
+  - Special handling for Tickets category with "a" article and pluralization
 
-## [2.0.7] 2020-03-06
-### BugFixing
-- Solved the broken links
-- Updated NoUiSlider plugin
-- Solved the existing bugs
-- Change variables from `$brand-color` to `$color`
+- **Real Estate Form**
 
-## [2.0.6] 2019-09-03
-### BugFixing
-- Fixed issue (javascript file)
+  - Added "Mirror Park" location
+  - Alphabetically sorted location lists
+  - Column-first layout for location selection
 
-## [2.0.5] 2018-11-23
-### Improvements, BugFixing
-- Changes for responsive devices
-- Improvements and BugFixing for documentation
-- Change versions on CSS and JS files
-- Pro Documentation integrated in Free Version
-- Eliminated extra CSS and JS
+- **Work Form**
 
-## [2.0.4] 2018-07-02
-### BugFixing
-- Solved responsive issues
-- Updated plugins
-- Speed optimizations
-- Documentation errors fixed
-- Gulp compiling of the SASS files
-- Change versions on CSS and JS files
-- Small changes for components
+  - Reordered job types (Plantation workers at top)
+  - Reordered specific roles with column layout
+  - Automatic "$" and thousands separator formatting for salary amount (output only)
+  - Updated policy validation for salary format
 
-## [2.0.3] 2018-05-07
-### BugFixing
-- Scss cleaned and fixed issues when compiling
-- Archive cleaned
-- Other small bug fixing
+- **Other Form**
 
-## [2.0.2] 2018-02-13
-### Improvements, Bootstrap 4.0.0 Final Included
-- Reestablish the routes/folder for images
+  - Merged Containers and Resources into Items category
+  - Alphabetically sorted item categories and item types
+  - Column-first layout for item category and item type selection
+  - Maximum 4 columns for item type grid
+  - Special handling for single-item categories (auto-select item type)
+  - Resources and Containers as item categories with special UI
 
-## [2.0.1] 2018-02-06
-### Bug fixing, Improvements
-- SASS issue compile fixed
-- Included gulp task that opens the project in browser
+- **Data Organization**
+  - Moved all data to `data.ts` for better organization
+  - Sorted all arrays alphabetically
+  - Added helper function for array sorting
 
-## [2.0.0] 2018-01-12
-### Bootstrap 4 update
-- Core base code on Bootstrap 4
-- Documentation code base written from scratch
-- Speed optimizations
-- Class changes : .card-block to .card-body
-- .navbar-toggleable-* to .navbar-expand-*
-- .hidden-*-down to .d-none .d-*-block
-- .hidden-*-up to .d-*-none
-- .checkbox to .form-check
-- .radio to .form-check
-- more class changes here:https://medium.com/@lukaszholeczek/how-to-upgrade-bootstrap-4-alpha-6-to-bootstrap-4-beta-d43b4210f2a3
-- Bug fixes for responsive devices
-- Small changes for components
+### Fixed
 
-## [1.2.1] 2017-11-09
-### BugFixing
-- fixed parallax page scroll
-- fixed cards from `ecommerce.html` page
+- Double periods after prices in generated ads
+- Missing period after "Million" in price sections
+- Period handling for numeric prices (no period after numbers)
+- "Looking for work" prefix logic in WorkForm
+- Item category selection state management
+- Resource type selection state management
+- Container type selection state management
+- Price formatting consistency across all forms
+- Quantity validation for items and resources
 
-## [1.2.0] 2017-09-13
-### BugFixing
-- jQuery library update to the latest version
-- removed atv-img-animation.js library ( multiple problems with the browsers )
-- fixed rotating card system for IE, changed rotating cards with raised image with regular cards with background image or plain cards
-- bootstrap-selectpicker.js updated to the latest version
+### Changed
 
-## [1.1.1] 2017-05-22
-### BugFixing
-- fixed problem with Morphing Cards(rotating manual and auto) and Perspective Cards when images were loading later than the javascript
+- Output field is now editable
+- OtherForm category order: Clothing, Items, Containers, Resources first
+- Purpose selection moved before Category selection in OtherForm
+- Removed "Clothing Category" section when clothing is selected
+- Item type selection uses grid layout instead of search input
+- Quality input changed to radio buttons for Inventory category
+- Location lists display in column-first layout (top to bottom, then next column)
+- Specific role groups display in columns in WorkForm
 
-## [1.1.0] 2017-04-14
-### BugFixing, Plugins Updates, New Cards (HTML Version)
-- v1.1.0 14 Apr, 2017 -
-- Bootstrap v3.3.7
-- Bootstrap DateTimePicker v4.17.45
-- Replace Bootstrap SelectPicker v1.11.2
-- Replace Tags with Bootstrap TagsInput v0.8.0
-- jQuery.Flexisel v2.1.0
-- NoUiSlider v9.0.0
-- jQuery v3.1.1
-- moment.js v2.14.1
-- Added new cards
-- Added 3D animation effect for images on cards(atvImg library)
-- Added DynamicShadows
-- Added New rotating cards
-- Added Ecommerce Page
-- Bug fixing
-- Documentation Updates
-- Added simple input example
+### Technical Improvements
 
-IMPORTANT! If you migrate from V1.0.0 to V1.1.0 please make sure your replace the '.content' class inside each card with '.card-content', we've made this adjustment for a better control of the content that is inside a card. Sorry for the inconvenience.
-
-## [1.0.0] 2016-06-15
-### Initial Release
+- Improved state management with atomic updates
+- Better code organization with data separation
+- Consistent formatting functions across all forms
+- Enhanced validation logic for form inputs
+- Improved template generation with special case handling

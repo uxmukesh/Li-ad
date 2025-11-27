@@ -45,6 +45,13 @@ export default function WorkForm({
     onChange(updatedForm);
   };
 
+  const handleSalaryAmountChange = (value: string) => {
+    // Store only plain numbers - no $ or formatting in input
+    // Remove all non-numeric characters except dots (for decimal numbers)
+    const plainNumber = value.replace(/[^\d.]/g, "");
+    handleChange("salaryAmount", plainNumber);
+  };
+
   const handleRadioChange = (field: keyof WorkFormType, value: string) => {
     const updatedForm = { ...localForm, [field]: value };
     setLocalForm(updatedForm);
@@ -142,13 +149,13 @@ export default function WorkForm({
               <input
                 type="radio"
                 name="jobType"
-                value="construction-workers"
-                checked={localForm.jobType === "construction-workers"}
+                value="plantation-workers"
+                checked={localForm.jobType === "plantation-workers"}
                 onChange={(e) => handleRadioChange("jobType", e.target.value)}
                 className="form-radio"
               />
               <span className="ml-2 text-sm text-gray-300">
-                Construction workers
+                Plantation workers
               </span>
             </label>
             <label className="flex items-center">
@@ -166,6 +173,19 @@ export default function WorkForm({
               <input
                 type="radio"
                 name="jobType"
+                value="construction-workers"
+                checked={localForm.jobType === "construction-workers"}
+                onChange={(e) => handleRadioChange("jobType", e.target.value)}
+                className="form-radio"
+              />
+              <span className="ml-2 text-sm text-gray-300">
+                Construction workers
+              </span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="jobType"
                 value="general-workers"
                 checked={localForm.jobType === "general-workers"}
                 onChange={(e) => handleRadioChange("jobType", e.target.value)}
@@ -173,19 +193,6 @@ export default function WorkForm({
               />
               <span className="ml-2 text-sm text-gray-300">
                 General workers
-              </span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="jobType"
-                value="plantation-workers"
-                checked={localForm.jobType === "plantation-workers"}
-                onChange={(e) => handleRadioChange("jobType", e.target.value)}
-                className="form-radio"
-              />
-              <span className="ml-2 text-sm text-gray-300">
-                Plantation workers
               </span>
             </label>
           </div>
@@ -200,31 +207,7 @@ export default function WorkForm({
             Role
           </h6>
 
-          <div className="space-y-4">
-            {/* Construction Site Roles */}
-            <div>
-              <h6 className="text-xs font-semibold text-gray-400 mb-2 block">
-                Construction Site Roles
-              </h6>
-              <div className="space-y-2">
-                {constructionRoles.map((role) => (
-                  <label key={role} className="flex items-center">
-                    <input
-                      type="radio"
-                      name="specificRole"
-                      value={role}
-                      checked={localForm.specificRole === role}
-                      onChange={(e) =>
-                        handleChange("specificRole", e.target.value)
-                      }
-                      className="form-radio"
-                    />
-                    <span className="ml-2 text-sm text-gray-300">{role}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Professional Services */}
             <div>
               <h6 className="text-xs font-semibold text-gray-400 mb-2 block">
@@ -297,13 +280,13 @@ export default function WorkForm({
               </div>
             </div>
 
-            {/* Security & Support */}
+            {/* Construction Site Roles - 4th */}
             <div>
               <h6 className="text-xs font-semibold text-gray-400 mb-2 block">
-                Security & Support
+                Construction Site Roles
               </h6>
               <div className="space-y-2">
-                {securitySupportRoles.map((role) => (
+                {constructionRoles.map((role) => (
                   <label key={role} className="flex items-center">
                     <input
                       type="radio"
@@ -321,13 +304,13 @@ export default function WorkForm({
               </div>
             </div>
 
-            {/* Plantation Work */}
+            {/* Security & Support */}
             <div>
               <h6 className="text-xs font-semibold text-gray-400 mb-2 block">
-                Plantation Work
+                Security & Support
               </h6>
               <div className="space-y-2">
-                {plantationRoles.map((role) => (
+                {securitySupportRoles.map((role) => (
                   <label key={role} className="flex items-center">
                     <input
                       type="radio"
@@ -651,9 +634,9 @@ export default function WorkForm({
               <input
                 type="text"
                 value={localForm.salaryAmount}
-                onChange={(e) => handleChange("salaryAmount", e.target.value)}
+                onChange={(e) => handleSalaryAmountChange(e.target.value)}
                 className="form-input w-32"
-                placeholder="$15.000"
+                placeholder="15000"
               />
             )}
           </div>
